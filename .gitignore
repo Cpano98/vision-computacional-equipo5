@@ -520,6 +520,6 @@ TSWLatexianTemp*
 # glossaries
 *.glstex
 
-template.pdf
+*.pdf
 
 # End of https://www.toptal.com/developers/gitignore/api/latex
