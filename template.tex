@@ -16,6 +16,9 @@
 \usepackage{xcolor}
 \usepackage{float}     % para usar [H]
 \usepackage{placeins}  % para \FloatBarrier
+% Bloques de código
+\usepackage{listings}
+\usepackage{minted}
 
 % --- GEOMETRÍA DE PÁGINA ---
 \geometry{
@@ -71,6 +74,13 @@
 % --- MODO DRAFT PARA COMPILACIÓN RÁPIDA ---
 % Si tienes problemas de timeout, descomenta la siguiente línea:
 % \usepackage[draft]{graphicx}  % Esto evita cargar las imágenes completas
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{lightgray},
+  frame=single,
+  breaklines=true
+}
 
 % ==============================
 % INICIO DEL DOCUMENTO
@@ -209,6 +219,20 @@ Referencia a imagen \ref{fig:imagen_1}
 
 \noindent
 <<Texto>>
+
+<<Codigo>>
+
+
+\begin{lstlisting}[language=Java]
+for (int i = 0; i < 10; i++) {
+    System.out.println("Hola mundo");
+}
+\end{lstlisting}
+
+\begin{minted}{python}
+for i in range(10):
+    print("Hola mundo")
+\end{minted}
 \newpage
 
 \section{Conclusiones}
