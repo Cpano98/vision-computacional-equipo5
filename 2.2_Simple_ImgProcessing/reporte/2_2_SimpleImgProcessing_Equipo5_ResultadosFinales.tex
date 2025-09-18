@@ -276,26 +276,40 @@ En la figura \ref{fig:estiramiento_de_contraste_justificacion} se muestra que el
 Este método redistribuye los valores de intensidad para aplanar el histograma de la imagen, lo que mejora el contraste en toda la imagen. Es particularmente eficaz para imágenes con muy bajo contraste y puede revelar detalles que de otra manera no serían visibles.
 
 
-Código:
+El siguiente código muestra como realizar esta operación utilizando la función \texttt{equalizeHist} de la librería \texttt{cv2}:
 \begin{minted}{python}
 # 3) Histogram equalization
 img_eq = cv2.equalizeHist(img1_gray)
 \end{minted}
 
-Resultados:
-<<Colocar resultados>>
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figuras/ecualizacion_imagen.png}
+  \caption{Imágenes con aplicación de Ecualización del Histograma}
+  \label{fig:ecualizacion_imagen}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figuras/ecualizacion_histograma.png}
+  \caption{Histograma aplicando Ecualización}
+  \label{fig:ecualizacion_histograma}
+\end{figure}
 
-Discusión/Justificación:
+La Figura \ref{fig:ecualizacion_imagen} muestra el resultado de la aplicación de Ecualización del Histograma sobre 2 de nuestras imágenes de prueba. En la Figura \ref{fig:ecualizacion_histograma} se aprecia el histograma de la primer imagen.
 
-<<Colocar imagen>>
+\subsubsection{Comparativa de Histogramas de las transformaciones}
+
 La comparación de los histogramas confirma la diferencia. El histograma original muestra una concentración de valores en un rango pequeño. El histograma con estiramiento de contraste muestra los valores más dispersos. El histograma de la ecualización muestra una distribución más uniforme en todo el rango de 0 a 255, lo que justifica la mejora visual en el contraste.
 
-Histogramas:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figuras/comparacion_transformaciones.png}
+  \caption{Comparación de imágenes y sus histogramas}
+  \label{fig:comparacion_transformaciones}
+\end{figure}
 
-<<Colocar imagen>>
-
-\subsubsection{Negativo de Imagen}
+\subsection{Negativo de Imagen}
 
 La inversión de una imagen, o la obtención de su negativo, es una transformación a nivel de píxel donde la intensidad de cada píxel se resta del valor de intensidad máximo posible. Esta técnica es de gran valor en el análisis de películas de radiología, ya que puede hacer que los detalles de bajo contraste sean más visibles.
 
@@ -370,7 +384,7 @@ plt.show()
 
 \textbf{Análisis del Histograma:} Los histogramas de los billetes originales y sus negativos son inversos. Los picos de intensidad que estaban en el lado derecho (brillante) del histograma original se mueven al lado izquierdo (oscuro) en el histograma negativo, y viceversa. Esto refleja el cambio de luminancia en la imagen. En las Figuras \ref{fig:histograma_negativo1} y \ref{fig:histograma_negativo2} se muestra la comparativa de los histogramas de las imágenes originales (lado derecho) con el histograma de su contraparte negativa (lado izquierdo), del anverso y reverso del billete, respectivamente.
 
-\subsubsection{Corrección de Gamma}
+\subsection{Corrección de Gamma}
 
 La corrección de gamma es una operación no lineal utilizada para codificar o decodificar la luminancia en las imágenes. Es especialmente útil en campos como la astronomía, donde ayuda a equilibrar la representación visual de objetos celestes muy brillantes y muy oscuros.
 En las imágenes astronómicas, los objetos tenues como las nebulosas y las galaxias distantes tienen valores de píxel muy bajos en comparación con las estrellas brillantes. Un valor de gamma menor que 1 ($\gamma < 1$) ilumina los tonos medios y las sombras, haciendo que los detalles tenues sean más visibles sin saturar las estrellas brillantes. Por el contrario, un valor de gamma mayor que 1 ($\gamma > 1$) oscurece la imagen, lo que puede usarse para reducir el ruido de fondo.
@@ -426,7 +440,7 @@ La Figura \ref{fig:correccion_gamma} muestra diferentes imágenes producidas var
   \item \textbf{$\gamma = 1$}: La imagen permanece sin cambios, sirviendo como el punto de referencia.
 \end{itemize}
 
-\subsubsection{Sustracción de Imágenes}
+\subsection{Sustracción de Imágenes}
 
 La sustracción de imágenes es una técnica para detectar cambios entre dos imágenes capturadas en momentos diferentes pero desde el mismo punto de vista. Se aplica ampliamente en la vigilancia de seguridad para detectar movimiento o la aparición de nuevos objetos en una escena.
 
