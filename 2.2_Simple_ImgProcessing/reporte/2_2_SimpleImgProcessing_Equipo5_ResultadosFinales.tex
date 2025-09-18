@@ -338,10 +338,10 @@ Análisis del Histograma: Los histogramas de los billetes originales y sus negat
 \subsubsection{Corrección de Gamma}
 
 La corrección de gamma es una operación no lineal utilizada para codificar o decodificar la luminancia en las imágenes. Es especialmente útil en campos como la astronomía, donde ayuda a equilibrar la representación visual de objetos celestes muy brillantes y muy oscuros.
-En las imágenes astronómicas, los objetos tenues como las nebulosas y las galaxias distantes tienen valores de píxel muy bajos en comparación con las estrellas brillantes. Un valor de gamma menor que 1 (γ<1) ilumina los tonos medios y las sombras, haciendo que los detalles tenues sean más visibles sin saturar las estrellas brillantes. Por el contrario, un valor de gamma mayor que 1 (γ>1) oscurece la imagen, lo que puede usarse para reducir el ruido de fondo.
+En las imágenes astronómicas, los objetos tenues como las nebulosas y las galaxias distantes tienen valores de píxel muy bajos en comparación con las estrellas brillantes. Un valor de gamma menor que 1 ($\gamma < 1$) ilumina los tonos medios y las sombras, haciendo que los detalles tenues sean más visibles sin saturar las estrellas brillantes. Por el contrario, un valor de gamma mayor que 1 ($\gamma > 1$) oscurece la imagen, lo que puede usarse para reducir el ruido de fondo.
 
+El siguiente código crea una función que aplica la Corrección Gamma:
 
-Código:
 \begin{minted}{python}
 def apply_gamma(image_gray, gamma):
     invGamma = 1.0 / gamma
@@ -375,20 +375,21 @@ plt.tight_layout()
 plt.show()
 \end{minted}
 
-Resultados:
-<<Colocar resultados>>
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figuras/correccion_gamma.png}
+  \caption{Corrección Gamma: Múltiples transformaciones}
+  \label{fig:correccion_gamma}
+\end{figure}
 
-Discusión/Justificación:
+La Figura \ref{fig:correccion_gamma} muestra diferentes imágenes producidas variando los valores de $\gamma$, donde se puede observar lo siguiente:
 
-γ<1
-(0.3, 0.5, 0.7, 0.9): La imagen se vuelve progresivamente más brillante. Los tonos medios y las sombras se iluminan, haciendo que los detalles tenues sean más visibles sin saturar las partes brillantes.
-γ>1
-(1.2, 1.5, 2.0): La imagen se oscurece. Los tonos medios se vuelven más oscuros, lo que puede ser útil para reducir el ruido de fondo.
-
-γ=1.0
-La imagen permanece sin cambios, sirviendo como el punto de referencia.
-
+\begin{itemize}
+  \item \textbf{$\gamma < 1$}: La imagen se vuelve progresivamente más brillante. Los tonos medios y las sombras se iluminan, haciendo que los detalles tenues sean más visibles sin saturar las partes brillantes.
+  \item \textbf{$\gamma > 1$}: La imagen se oscurece. Los tonos medios se vuelven más oscuros, lo que puede ser útil para reducir el ruido de fondo.
+  \item \textbf{$\gamma = 1$}: La imagen permanece sin cambios, sirviendo como el punto de referencia.
+\end{itemize}
 
 \subsubsection{Sustracción de Imágenes}
 
