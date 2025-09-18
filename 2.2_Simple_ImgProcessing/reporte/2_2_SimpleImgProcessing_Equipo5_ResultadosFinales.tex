@@ -161,10 +161,14 @@ En el campo de la visión por computadora y el procesamiento de imágenes, las t
 
 \section{Desarrollo de actividades}
 
-<<Texto>>
+En esta sección se documenta el proceso práctico realizado para aplicar diversas técnicas de procesamiento de imágenes a nivel de píxel, utilizando el entorno colaborativo de Google Colab y la biblioteca OpenCV en Python. Las actividades se enfocan en transformar imágenes propias mediante métodos fotométricos que permiten modificar la intensidad, el contraste y la distribución de los valores de los píxeles. Estas transformaciones son fundamentales en el contexto de la visión computacional, ya que no solo mejoran la calidad visual de las imágenes, sino que también contribuyen a la aumentación de datos, una práctica esencial para entrenar modelos de inteligencia artificial con mayor robustez y precisión.
+
+Cada subsección presenta una técnica específica, su implementación en código, los resultados obtenidos y una justificación basada en literatura especializada. El análisis incluye comparativas visuales y de histogramas que permiten evaluar el impacto de cada transformación sobre las imágenes originales.
 
 \subsection{Carga de imágenes}
-Para desarrollar esta primera actividad, se realizó la carga de 3 imágenes de nuestro carrete. El código se muestra a continuación. 
+Como primer paso en el desarrollo de las actividades, se realizó la carga de tres imágenes propias desde el carrete personal de los integrantes del equipo. Estas imágenes fueron seleccionadas por su diversidad en contenido y condiciones de iluminación, con el objetivo de evaluar el comportamiento de las transformaciones fotométricas aplicadas posteriormente.
+
+La carga se realizó utilizando la biblioteca \texttt{matplotlib} para su visualización y \texttt{OpenCV} para su procesamiento. A continuación se muestra el código utilizado para desplegar las imágenes en una cuadrícula horizontal:
 
 \begin{minted}{python}
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
@@ -186,19 +190,17 @@ plt.show()
 \end{minted}
 
 \begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\linewidth]{figuras/carga_imagenes.png}
-  \caption{Carga y visualización de imágenes}
-  \label{fig:carga_imagenes}
+    \centering
+    \includegraphics[width=0.9\linewidth]{figuras/carga_imagenes.png}
+    \caption{Carga y visualización de imágenes seleccionadas para el proyecto}
+    \label{fig:carga_imagenes}
 \end{figure}
 
-Referencia a imagen \ref{fig:carga_imagenes}
-
+Estas imágenes servirán como base para aplicar las distintas transformaciones pixel a pixel descritas en las siguientes secciones. La diversidad en sus características permitirá observar con mayor claridad los efectos de cada técnica de procesamiento.
 
 \subsection{Transformaciones Pixel a Pixel}
 
-Para esta actividad, investigamos tres tipos de transformaciones:
-
+Las transformaciones pixel a pixel son técnicas fundamentales en el procesamiento de imágenes, especialmente útiles en la aumentación de datos para entrenar modelos de inteligencia artificial. En este proyecto se aplicaron tres transformaciones fotométricas sobre imágenes propias: transformación logarítmica, estiramiento de contraste y ecualización del histograma. A continuación se describe cada una con su respectiva implementación, análisis y justificación.
 
 \subsubsection{Transformación logarítmica}
 
@@ -224,7 +226,7 @@ img_log = (c_log * np.log1p(img1_gray.astype(np.float32))).clip(0, 255).astype(n
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.5\linewidth]{figuras/transformacion_log.png}
-  \caption{Transformación logarítmica aplicada a imagen en escala de grises}
+  \caption{Aplicación de transformación logarítmica sobre imagen en escala de grises}
   \label{fig:transformacion_logaritmica}
 \end{figure}
 
@@ -237,7 +239,7 @@ img_log = (c_log * np.log1p(img1_gray.astype(np.float32))).clip(0, 255).astype(n
 
 \textbf{Justificación:} Esta transformación es ampliamente utilizada en tareas de aumentación de datos para modelos de inteligencia artificial, ya que permite generar versiones alternativas de una imagen que conservan su estructura pero resaltan detalles que podrían ser ignorados por modelos de aprendizaje profundo. En particular, es útil en dominios como imágenes médicas, astronomía o inspección industrial, donde los detalles en zonas oscuras pueden ser críticos para la toma de decisiones automatizada.
 
-\textbf{Comparativa:} Al aplicar la transformación logarítmica, el histograma de la imagen (Figura~\ref{fig:histograma_transformacion_logaritmica}) se modifica significativamente. Los valores de intensidad originalmente agrupados en el rango bajo se redistribuyen hacia el centro del histograma, lo que indica una mejora en la visibilidad de las zonas oscuras. Esta expansión del rango dinámico en las sombras permite que los detalles ocultos sean más accesibles para algoritmos de detección y clasificación. En la Figura~\ref{fig:transformacion_logaritmica}, se observa cómo la imagen transformada revela detalles en las áreas de sombra que no eran perceptibles en la imagen original.
+\textbf{Comparativa:} Al aplicar la transformación logarítmica, el histograma de la imagen (Figura~\ref{fig:histograma_transformacion_logaritmica}) se modifica significativamente. Los valores de intensidad originalmente agrupados en el rango bajo se redistribuyen hacia el centro del histograma, lo que indica una mejora en la visibilidad de las zonas oscuras. Esta expansión del rango dinámico en las sombras permite que los detalles ocultos sean más accesibles para algoritmos de detección y clasificación. Como se observa en la Figura~\ref{fig:transformacion_logaritmica}, la transformación permite revelar detalles en zonas oscuras que no eran visibles en la imagen original.
 
 \textbf{Referencia:} Esta técnica está documentada en la literatura como una herramienta eficaz para el preprocesamiento de imágenes en sistemas de visión por computadora (Gonzalez & Woods, 2018).
 
@@ -275,10 +277,10 @@ img_cs = np.clip((img1_gray - p_low) * (255.0 / max(1.0, (p_high - p_low))), 0, 
 \textbf{Referencia:} Esta técnica está documentada en la literatura especializada como una herramienta eficaz para la mejora de imágenes en sistemas de visión por computadora (Gonzalez & Woods, 2018).
 
 \subsubsection{Ecualización del histograma}
-Este método redistribuye los valores de intensidad para aplanar el histograma de la imagen, lo que mejora el contraste en toda la imagen. Es particularmente eficaz para imágenes con muy bajo contraste y puede revelar detalles que de otra manera no serían visibles.
+La ecualización del histograma es una técnica fotométrica de procesamiento pixel a pixel que redistribuye los valores de intensidad de una imagen para aplanar su histograma. Este proceso mejora el contraste global de la imagen, especialmente en aquellas que presentan una concentración de valores en un rango estrecho, como ocurre en condiciones de iluminación deficiente o en imágenes con bajo rango dinámico.
 
+En este proyecto, se aplicó la ecualización del histograma utilizando la función \texttt{equalizeHist()} de la biblioteca \texttt{cv2}, sobre imágenes previamente convertidas a escala de grises. En la Figura~\ref{fig:ecualizacion_imagen} se observa cómo la ecualización mejora la visibilidad de detalles en imágenes originalmente apagadas, al redistribuir los niveles de intensidad. El siguiente código muestra su implementación:
 
-El siguiente código muestra como realizar esta operación utilizando la función \texttt{equalizeHist} de la librería \texttt{cv2}:
 \begin{minted}{python}
 # 3) Histogram equalization
 img_eq = cv2.equalizeHist(img1_gray)
@@ -287,29 +289,46 @@ img_eq = cv2.equalizeHist(img1_gray)
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{figuras/ecualizacion_imagen.png}
-  \caption{Imágenes con aplicación de Ecualización del Histograma}
+  \caption{Aplicación de ecualización del histograma sobre imágenes de prueba}
   \label{fig:ecualizacion_imagen}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{figuras/ecualizacion_histograma.png}
-  \caption{Histograma aplicando Ecualización}
+  \caption{Histograma resultante tras aplicar ecualización}
   \label{fig:ecualizacion_histograma}
 \end{figure}
 
-La Figura \ref{fig:ecualizacion_imagen} muestra el resultado de la aplicación de Ecualización del Histograma sobre 2 de nuestras imágenes de prueba. En la Figura \ref{fig:ecualizacion_histograma} se aprecia el histograma de la primer imagen.
+\textbf{Justificación:} Esta técnica es ampliamente utilizada en aumentación de datos para modelos de inteligencia artificial, ya que permite mejorar la visibilidad de estructuras relevantes en imágenes con bajo contraste. Al redistribuir los valores de intensidad, se facilita la extracción de características por parte de algoritmos de aprendizaje profundo, lo que puede mejorar el desempeño en tareas de clasificación, segmentación o detección.
+
+\textbf{Comparativa e interpretación del histograma:} Como se observa en la Figura~\ref{fig:ecualizacion_histograma}, el histograma original presentaba una concentración de valores en un rango limitado, lo que se traduce en una imagen visualmente apagada. Tras aplicar la ecualización, los valores se distribuyen de forma más uniforme en el rango de 0 a 255, lo que mejora significativamente el contraste y la percepción de detalles. Esta redistribución permite que los modelos de visión computacional trabajen con imágenes más informativas.
+
+\textbf{Referencia:} Esta técnica está documentada en la literatura como una herramienta eficaz para la mejora de imágenes en sistemas de visión por computadora (Gonzalez & Woods, 2018).
 
 \subsubsection{Comparativa de Histogramas de las transformaciones}
 
-La comparación de los histogramas confirma la diferencia. El histograma original muestra una concentración de valores en un rango pequeño. El histograma con estiramiento de contraste muestra los valores más dispersos. El histograma de la ecualización muestra una distribución más uniforme en todo el rango de 0 a 255, lo que justifica la mejora visual en el contraste.
+Para evaluar el impacto de las transformaciones fotométricas aplicadas (transformación logarítmica, estiramiento de contraste y ecualización del histograma) se realizó una comparativa visual de los histogramas resultantes. Esta comparación permite observar cómo cada técnica modifica la distribución de los niveles de intensidad en las imágenes, lo cual se traduce en mejoras perceptibles en el contraste y la visibilidad de detalles.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{figuras/comparacion_transformaciones.png}
-  \caption{Comparación de imágenes y sus histogramas}
+  \caption{Comparación de imágenes y sus histogramas tras aplicar transformaciones fotométricas}
   \label{fig:comparacion_transformaciones}
 \end{figure}
+
+\textbf{Interpretación:} En la Figura~\ref{fig:comparacion_transformaciones} se observa que:
+
+\begin{itemize}
+    \item El histograma de la imagen original presenta una concentración de valores en un rango estrecho, lo que indica bajo contraste.
+    \item La transformación logarítmica expande los valores bajos hacia el centro del histograma, mejorando la visibilidad en zonas oscuras.
+    \item El estiramiento de contraste redistribuye los valores de forma más amplia, extendiendo el rango dinámico sin alterar la forma general del histograma.
+    \item La ecualización del histograma genera una distribución más uniforme en todo el rango de 0 a 255, lo que resulta en un contraste más equilibrado y una imagen visualmente más clara.
+\end{itemize}
+
+\textbf{Justificación:} Esta comparativa confirma que cada técnica tiene un efecto distinto sobre la imagen, y su elección depende del tipo de mejora deseada. En el contexto de aumentación de datos para inteligencia artificial, estas transformaciones permiten generar variantes útiles de las imágenes originales, enriqueciendo el conjunto de entrenamiento y mejorando la capacidad de generalización de los modelos.
+
+\textbf{Referencia:} El análisis de histogramas como herramienta para evaluar la calidad de las transformaciones está respaldado por la literatura especializada en procesamiento digital de imágenes (Gonzalez & Woods, 2018).
 
 \subsection{Negativo de Imagen}
 
@@ -582,7 +601,7 @@ Se observa que como resultado de la sustracción se produce una máscara de obje
 
 \section{Conclusiones}
 
-El proyecto exploró y demostró con éxito varias transformaciones fundamentales a nivel de píxel en el procesamiento de imágenes, cada una con una aplicación única. La transformación logarítmica, el estiramiento de contraste y la ecualización del histograma demostraron ser herramientas efectivas para la aumentación de datos y la mejora fotométrica, revelando detalles que no eran evidentes en las imágenes originales. 
+El proyecto permitió aplicar y analizar diversas transformaciones fotométricas pixel a pixel, demostrando su utilidad en la mejora visual de imágenes y en la preparación de datos para modelos de inteligencia artificial. Las técnicas implementadas no solo mejoran el contraste y la visibilidad de detalles, sino que también permiten generar variaciones útiles para entrenar redes neuronales. La integración de análisis visual y de histogramas fortaleció la comprensión del impacto de cada transformación. Se concluye que el procesamiento de imágenes es una herramienta clave en sistemas de visión computacional aplicados a medicina, seguridad, astronomía y clasificación automática. 
 
 \newpage
 
@@ -595,10 +614,10 @@ El proyecto exploró y demostró con éxito varias transformaciones fundamentale
 P. S. Anitha, P. Lakshmi Priya. (2018). A Survey on Image Enhancement Techniques. International Journal of Scientific Research in Computer Science and Engineering.
 
 \bibitem{gonzalez2018}
-Rafael C. Gonzalez, Richard E. Woods. (2018). Digital Image Processing. 4th Edition. Pearson.
+R. C. Gonzalez and R. E. Woods, \textit{Digital Image Processing}, 4th ed., Pearson, 2018.
 
-\bibitem{opencpythontutorials2023}
-OpenCV-Python Tutorials. (2023). OpenCV Official Documentation. Available at: https://docs.opencv.org/4.x/
+\bibitem{opencv}
+OpenCV-Python Tutorials, OpenCV Official Documentation, 2023. Disponible en: \url{https://docs.opencv.org/4.x/}
 
 %% Debemos usar Wikipedia como referencia?
 \bibitem{wikipedia2023}
