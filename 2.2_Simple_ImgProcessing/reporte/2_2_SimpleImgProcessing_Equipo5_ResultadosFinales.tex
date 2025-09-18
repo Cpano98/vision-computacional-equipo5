@@ -299,11 +299,24 @@ Histogramas:
 
 La inversión de una imagen, o la obtención de su negativo, es una transformación a nivel de píxel donde la intensidad de cada píxel se resta del valor de intensidad máximo posible. Esta técnica es de gran valor en el análisis de películas de radiología, ya que puede hacer que los detalles de bajo contraste sean más visibles.
 
-En las películas de rayos X tradicionales, los huesos y tejidos densos aparecen como áreas claras sobre un fondo oscuro. Para este ejercicio, el uso de esta técnica para la detección de billetes falsos resulta altamente conveniente, pues resalta detalles difíciles de detectar a simple vista.
+En las películas de rayos X tradicionales, los huesos y tejidos densos aparecen como áreas claras sobre un fondo oscuro. Para este ejercicio, el uso de esta técnica para la detección de billetes falsos resulta altamente conveniente, pues resalta detalles difíciles de detectar a simple vista. Las Figuras \ref{fig:billete_original_1} y \ref{fig:billete_original_2} muestran el anverso y reverso de un billete de 500 pesos mexicanos antes de realizar la transformación.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{../data/billete-original/img1.jpg}
+  \caption{Billete Original: Anverso}
+  \label{fig:billete_original_1}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{../data/billete-original/img2.jpg}
+  \caption{Billete Original: Reverso}
+  \label{fig:billete_original_2}
+\end{figure}
 
-Código:
+El siguiente código muestra como se puede aplicar dicha transformación:
+
 \begin{minted}{python}
 plt.tight_layout()
 plt.show()
@@ -325,15 +338,37 @@ plt.tight_layout()
 plt.show()
 \end{minted}
 
-Resultados:
-<<Colocar resultados>>
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figuras/negativo1.png}
+  \caption{Negativo de Imagen: Anverso}
+  \label{fig:billete_negativo_1}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figuras/negativo2.png}
+  \caption{Negativo de Imagen: Reverso}
+  \label{fig:billete_negativo_2}
+\end{figure}
 
-Discusión/Justificación:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figuras/histograma_negativo1.png}
+  \caption{Histogramas Anverso}
+  \label{fig:histograma_negativo1}
+\end{figure}
 
-Análisis Visual: Al invertir la imagen, los detalles de los billetes que son difíciles de ver a simple vista se vuelven más evidentes. Las marcas de seguridad o texturas que eran claras se vuelven oscuras y viceversa.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figuras/histograma_negativo2.png}
+  \caption{Histogramas Reverso}
+  \label{fig:histograma_negativo2}
+\end{figure}
 
-Análisis del Histograma: Los histogramas de los billetes originales y sus negativos son inversos. Los picos de intensidad que estaban en el lado derecho (brillante) del histograma original se mueven al lado izquierdo (oscuro) en el histograma negativo, y viceversa. Esto refleja el cambio de luminancia en la imagen.
+\textbf{Análisis Visual:} Al invertir la imagen, los detalles de los billetes que son difíciles de ver a simple vista se vuelven más evidentes como se puede apreciar en las Figuras \ref{fig:billete_negativo_1} y \ref{fig:billete_negativo_2}. Las marcas de seguridad o texturas que eran claras se vuelven oscuras y viceversa.
+
+\textbf{Análisis del Histograma:} Los histogramas de los billetes originales y sus negativos son inversos. Los picos de intensidad que estaban en el lado derecho (brillante) del histograma original se mueven al lado izquierdo (oscuro) en el histograma negativo, y viceversa. Esto refleja el cambio de luminancia en la imagen. En las Figuras \ref{fig:histograma_negativo1} y \ref{fig:histograma_negativo2} se muestra la comparativa de los histogramas de las imágenes originales (lado derecho) con el histograma de su contraparte negativa (lado izquierdo), del anverso y reverso del billete, respectivamente.
 
 \subsubsection{Corrección de Gamma}
 
