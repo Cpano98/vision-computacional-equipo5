@@ -245,7 +245,7 @@ Resultados:
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{figuras/estiramiento_de_contraste.png}
-  \caption{Transformación Logarítmica: Comparación de imágenes}
+  \caption{Estiramiento de Contraste}
   \label{fig:estiramiento_de_contraste}
 \end{figure}
 
@@ -253,9 +253,14 @@ Referencia a imagen \ref{fig:estiramiento_de_contraste}
 
 Discusión/Justificación:
 
-<<Colocar imagen>>
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figuras/estiramiento_de_contraste_justificacion.png}
+  \caption{Comparativa de Histogramas de escalas de grises entre Original y Estiramiento de contraste}
+  \label{fig:estiramiento_de_contraste_justificacion}
+\end{figure}
 
-La imagen resultante del estiramiento de contraste muestra una mejora general, pero la de la ecualización del histograma parece tener un contraste aún más equilibrado y uniforme.
+En la figura \ref{fig:estiramiento_de_contraste_justificacion} se muestra que el estiramiento de contraste tiene una mejora general, pero la de la ecualización del histograma parece tener un contraste aún más equilibrado y uniforme.
 
 \subsubsection{Ecualización del histograma}
 Este método redistribuye los valores de intensidad para aplanar el histograma de la imagen, lo que mejora el contraste en toda la imagen. Es particularmente eficaz para imágenes con muy bajo contraste y puede revelar detalles que de otra manera no serían visibles.
@@ -263,7 +268,8 @@ Este método redistribuye los valores de intensidad para aplanar el histograma d
 
 Código:
 \begin{minted}{python}
-## codigo
+# 3) Histogram equalization
+img_eq = cv2.equalizeHist(img1_gray)
 \end{minted}
 
 Resultados:
@@ -289,7 +295,24 @@ En las películas de rayos X tradicionales, los huesos y tejidos densos aparecen
 
 Código:
 \begin{minted}{python}
-## codigo
+plt.tight_layout()
+plt.show()
+# Grayscale histogram for each bill and its negative
+def plot_gray_hist(ax, image, title):
+    gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    ax.hist(gray.ravel(), bins=256, range=(0,256), color='black')
+    ax.set_title(title)
+    ax.set_xlim(0,256)
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+
+plot_gray_hist(axes[0, 0], bill1, 'Bill 1 - Histogram (Original)')
+plot_gray_hist(axes[0, 1], neg_bill1, 'Bill 1 - Histogram (Negative)')
+plot_gray_hist(axes[1, 0], bill2, 'Bill 2 - Histogram (Original)')
+plot_gray_hist(axes[1, 1], neg_bill2, 'Bill 2 - Histogram (Negative)')
+
+plt.tight_layout()
+plt.show()
 \end{minted}
 
 Resultados:
@@ -310,7 +333,36 @@ En las imágenes astronómicas, los objetos tenues como las nebulosas y las gala
 
 Código:
 \begin{minted}{python}
-## codigo
+def apply_gamma(image_gray, gamma):
+    invGamma = 1.0 / gamma
+    table = np.array([((i / 255.0) ** invGamma) * 255 for i in np.arange(256)]).astype("uint8")
+    return cv2.LUT(image_gray, table)
+
+# List of gammas to test (adjust as needed)
+gammas = [0.3, 0.5, 0.7, 0.9, 1.0, 1.2, 1.5, 2.0]
+results = [(g, apply_gamma(imgPopo, g)) for g in gammas]
+
+# Show original + corrections in a 3x3 grid
+fig, axes = plt.subplots(3, 3, figsize=(12, 12))
+axes = axes.ravel()
+
+# Position 0: Original
+axes[0].imshow(imgPopo, cmap='gray')
+axes[0].set_title('Original')
+axes[0].axis('off')
+
+# Rest: different gammas
+for ax, (g, img_c) in zip(axes[1:], results):
+    ax.imshow(img_c, cmap='gray')
+    ax.set_title(f'gamma={g}')
+    ax.axis('off')
+
+# Hide extra axes if any
+for k in range(1 + len(results), len(axes)):
+    axes[k].axis('off')
+
+plt.tight_layout()
+plt.show()
 \end{minted}
 
 Resultados:
@@ -337,7 +389,97 @@ Al restar una imagen de fondo de referencia de un nuevo fotograma, cualquier val
 
 Código:
 \begin{minted}{python}
-## codigo
+imgV1 = mpimg.imread('data/data-substraction-sample/img-1.jpg')
+imgV2 = mpimg.imread('data/data-substraction-sample/img-2.jpg')
+
+# Ensure both images have the same shape for subtraction
+if imgV1.shape != imgV2.shape:
+    # Resize the second image to match the first
+    imgV2_resized = cv2.resize(imgV2, (imgV1.shape[1], imgV1.shape[0]))
+else:
+    imgV2_resized = imgV2
+
+# Convert to grayscale for better processing
+if imgV1.ndim == 3:
+    gray1 = cv2.cvtColor(imgV1, cv2.COLOR_RGB2GRAY)
+else:
+    gray1 = imgV1
+
+if imgV2_resized.ndim == 3:
+    gray2 = cv2.cvtColor(imgV2_resized, cv2.COLOR_RGB2GRAY)
+else:
+    gray2 = imgV2_resized
+
+# Ensure 8-bit
+if gray1.dtype != np.uint8:
+    gray1 = cv2.normalize(gray1, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+if gray2.dtype != np.uint8:
+    gray2 = cv2.normalize(gray2, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+
+# Detect NEW objects: objects that appear in img2 but not in img1
+# Method: Find regions where img2 is significantly brighter than img1
+diff_new = cv2.subtract(gray2, gray1)  # Only positive differences (new objects)
+
+# Apply threshold to isolate new objects
+_, mask_new = cv2.threshold(diff_new, 30, 255, cv2.THRESH_BINARY)  # Adjust threshold as needed
+
+# Morphological operations to clean up the mask
+kernel = np.ones((5, 5), np.uint8)
+mask_clean = cv2.morphologyEx(mask_new, cv2.MORPH_OPEN, kernel, iterations=2)
+mask_clean = cv2.morphologyEx(mask_clean, cv2.MORPH_CLOSE, kernel, iterations=3)
+
+# Find contours of new objects
+contours, _ = cv2.findContours(mask_clean, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+# Filter and draw bounding boxes for new objects
+vis = imgV2_resized.copy()
+if vis.ndim == 2:
+    vis = cv2.cvtColor(vis, cv2.COLOR_GRAY2RGB)
+
+new_objects = []
+for c in contours:
+    x, y, w, h = cv2.boundingRect(c)
+    area = w * h
+    if area < 100:  # Filter out very small objects
+        continue
+    new_objects.append((x, y, w, h))
+    cv2.rectangle(vis, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Green for new objects
+    cv2.putText(vis, f'New {len(new_objects)}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+# Summary metrics for new objects only
+num_new_objects = len(new_objects)
+areas = [w * h for (_, _, w, h) in new_objects]
+area_min = min(areas) if areas else 0
+area_max = max(areas) if areas else 0
+
+# Visualization
+fig, axes = plt.subplots(1, 4, figsize=(20, 5))
+axes[0].imshow(imgV1)
+axes[0].set_title('Image 1 (Reference)')
+axes[0].axis('off')
+
+axes[1].imshow(imgV2_resized)
+axes[1].set_title('Image 2 (Current)')
+axes[1].axis('off')
+
+axes[2].imshow(mask_clean, cmap='gray')
+axes[2].set_title('New Objects Mask')
+axes[2].axis('off')
+
+axes[3].imshow(vis)
+axes[3].set_title(f'NEW Objects Detected: {num_new_objects}\nArea range: {area_min}-{area_max}')
+axes[3].axis('off')
+
+plt.tight_layout()
+plt.show()
+
+print(f"Detection Summary:")
+print(f"- Total new objects found: {num_new_objects}")
+print(f"- Area range: {area_min} - {area_max} pixels")
+if new_objects:
+    print(f"- Object locations: {new_objects}")
+else:
+    print("- No new objects detected")
 \end{minted}
 
 Resultados:
@@ -350,37 +492,9 @@ Discusión/Justificación:
 
 El resultado de la sustracción es una máscara de objetos nuevos que es predominantemente negra. Las áreas que han cambiado (donde está case de los audífonos) se muestran en blanco, creando un mapa que aísla el objeto en movimiento del fondo estático. La imagen final superpone esta detección, mostrando el audífono enmarcado y los detalles de los objetos detectados. Este proceso es efectivo y de bajo costo para sistemas de monitoreo en tiempo real
 
-
-\begin{itemize}
-  \item \textbf{<<Elemento1>>}: <<DescripcionElemento1>>
-  \item \textbf{<<Elemento2>>}: <<DescripcionElemento2>>
-  \item \textbf{<<Elemento3>>}: <<DescripcionElemento3>>
-\end{itemize}
-
-<<Texto>>
-
-
-\newpage
-
-\section{<<Tema2>>}
-
-<<Texto>>
-
-\subsection{<<Subtema>>}
-
-<<Texto>>
-
-<<Texto>>
-
-Referencia a imagen \ref{fig:imagen_1}
-
-
-
-
 \bigskip
 
-\noindent
-<<Texto>>
+
 \newpage
 
 \section{Conclusiones}
