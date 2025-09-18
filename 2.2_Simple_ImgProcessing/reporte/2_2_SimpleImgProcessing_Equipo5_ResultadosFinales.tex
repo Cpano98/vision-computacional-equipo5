@@ -19,6 +19,15 @@
 \usepackage{datetime2}
 \usepackage{listings}
 \usepackage{minted}
+
+\setminted{
+    breaklines=true,
+    breakanywhere=true,
+    fontsize=\small,
+    frame=single,
+    linenos
+}
+
 % --- GEOMETRÍA DE PÁGINA ---
 \geometry{
   letterpaper,
@@ -38,7 +47,8 @@
 
 % --- CAPTIONS ---
 \captionsetup[figure]{labelfont=bf,font=small}
-\captionsetup[table]{labelfont=bf,font=small}
+% \captionsetup[table]{labelfont=bf,font=small}
+% \captionsetup[listing]{labelfont=bf,font=small,name=Listado}
 
 % --- HYPERREF ---
 \hypersetup{
@@ -384,10 +394,27 @@ La imagen permanece sin cambios, sirviendo como el punto de referencia.
 
 La sustracción de imágenes es una técnica para detectar cambios entre dos imágenes capturadas en momentos diferentes pero desde el mismo punto de vista. Se aplica ampliamente en la vigilancia de seguridad para detectar movimiento o la aparición de nuevos objetos en una escena.
 
-Al restar una imagen de fondo de referencia de un nuevo fotograma, cualquier valor de píxel que no sea cero representa un cambio. Este método crea una máscara de cambio que aísla los objetos en movimiento del fondo estático. Después de un simple umbral y operaciones morfológicas para limpiar el ruido, la máscara de cambio se puede usar para identificar y localizar intrusos u otros eventos significativos, convirtiéndose en un método potente y de bajo costo para sistemas de monitoreo en tiempo real.
+Al restar una imagen de fondo de referencia de un nuevo fotograma, cualquier valor de píxel que no sea cero representa un cambio. Este método crea una máscara  de cambio que aísla los objetos en movimiento del fondo estático. Después de un simple umbral y operaciones morfológicas para limpiar el ruido, la máscara de cambio se puede usar para identificar y localizar intrusos u otros eventos significativos, convirtiéndose en un método potente y de bajo costo para sistemas de monitoreo en tiempo real.
+
+En nuestro ejemplo, las figuras \ref{fig:sustraccion_referencia} y \ref{fig:sustraccion_actual} representan la imagen de referencia e imagen actual respectivamente.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{../data/data-substraction-sample/img-1.jpg}
+  \caption{Sustracción de Imágenes: Imagen de Referencia}
+  \label{fig:sustraccion_referencia}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{../data/data-substraction-sample/img-2.jpg}
+  \caption{Sustracción de Imágenes: Imagen actual}
+  \label{fig:sustraccion_actual}
+\end{figure}
+
+El siguiente código nos permite realizar la sustracción de imágenes y detectar los objetos nuevos:
 
 
-Código:
 \begin{minted}{python}
 imgV1 = mpimg.imread('data/data-substraction-sample/img-1.jpg')
 imgV2 = mpimg.imread('data/data-substraction-sample/img-2.jpg')
@@ -482,18 +509,22 @@ else:
     print("- No new objects detected")
 \end{minted}
 
-Resultados:
-<<Colocar resultados>>
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figuras/sustraccion_mascara.png}
+  \caption{Sustracción de Imágenes: Máscara de nuevos objetos}
+  \label{fig:sustraccion_mascara}
+\end{figure}
 
-Discusión/Justificación:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{figuras/sustraccion_objetos.png}
+  \caption{Sustracción de Imágenes: Objetos detectados}
+  \label{fig:sustraccion_objetos}
+\end{figure}
 
-<<Colocar imagen>>
-
-El resultado de la sustracción es una máscara de objetos nuevos que es predominantemente negra. Las áreas que han cambiado (donde está case de los audífonos) se muestran en blanco, creando un mapa que aísla el objeto en movimiento del fondo estático. La imagen final superpone esta detección, mostrando el audífono enmarcado y los detalles de los objetos detectados. Este proceso es efectivo y de bajo costo para sistemas de monitoreo en tiempo real
-
-\bigskip
-
+Se observa que como resultado de la sustracción se produce una máscara de objetos nuevos (Figura \ref{fig:sustraccion_mascara}) que es predominantemente negra. Las áreas que han cambiado (donde está la caja de los audífonos) se muestran en blanco, creando un mapa que aísla el objeto en movimiento del fondo estático. La imagen final (figura \ref{fig:sustraccion_objetos}) superpone esta detección, mostrando el audífono enmarcado y los detalles de los objetos detectados. Este proceso es efectivo y de bajo costo para sistemas de monitoreo en tiempo real.
 
 \newpage
 
