@@ -238,10 +238,10 @@ La transformación logarítmica expande el rango de intensidad de los píxeles o
 
 
 \subsubsection{Estiramiento de contraste}
-Esta técnica mejora el contraste general mapeando linealmente el rango de intensidad de píxeles original a un nuevo rango más amplio (p. ej., de 0 a 255). Es efectiva cuando los valores de píxel de una imagen se agrupan en un rango pequeño, resultando en una apariencia de bajo contraste.
+El estiramiento de contraste es una técnica fotométrica de transformación pixel a pixel que mejora la visibilidad de los detalles en imágenes con bajo contraste. Esta técnica consiste en mapear linealmente el rango de intensidades de píxeles original a un nuevo rango más amplio, típicamente de 0 a 255, lo que permite una mejor distribución de los niveles de gris y una imagen visualmente más clara.
 
+En este proyecto, se aplicó el estiramiento de contraste a imágenes propias utilizando percentiles para evitar la influencia de valores atípicos. El código implementado calcula los percentiles 2 y 98 como límites de intensidad, y luego ajusta los valores de píxel en función de estos rangos.
 
-Código:
 \begin{minted}{python}
 # 2) Contrast stretching using percentiles to avoid outliers
 p_low, p_high = np.percentile(img1_gray, (2, 98))
@@ -250,27 +250,25 @@ if p_high <= p_low:
 img_cs = np.clip((img1_gray - p_low) * (255.0 / max(1.0, (p_high - p_low))), 0, 255).astype(np.uint8)
 \end{minted}
 
-Resultados:
-
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{figuras/estiramiento_de_contraste.png}
-  \caption{Estiramiento de Contraste}
+  \caption{Aplicación de estiramiento de contraste}
   \label{fig:estiramiento_de_contraste}
 \end{figure}
 
-Referencia a imagen \ref{fig:estiramiento_de_contraste}
+\textbf{Justificación:} Esta transformación es especialmente útil en el contexto de la inteligencia artificial, ya que permite aumentar la diversidad de imágenes de entrenamiento mediante aumentación de datos. Al mejorar el contraste, se facilita la extracción de características relevantes por parte de modelos de aprendizaje profundo, como redes neuronales convolucionales (CNN), lo cual puede mejorar el rendimiento en tareas de clasificación o segmentación.
 
-Discusión/Justificación:
+\textbf{Comparativa:} En la Figura \ref{fig:estiramiento_de_contraste_justificacion} se observa que el histograma de la imagen original presenta una concentración de valores en un rango estrecho, mientras que el histograma de la imagen transformada muestra una distribución más amplia y uniforme. Esto evidencia la mejora visual y técnica lograda mediante el estiramiento de contraste.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\linewidth]{figuras/estiramiento_de_contraste_justificacion.png}
-  \caption{Comparativa de Histogramas de escalas de grises entre Original y Estiramiento de contraste}
+  \caption{Estiramiento de Contraste: Comparación de histogramas entre imagen original y transformada}
   \label{fig:estiramiento_de_contraste_justificacion}
 \end{figure}
 
-En la figura \ref{fig:estiramiento_de_contraste_justificacion} se muestra que el estiramiento de contraste tiene una mejora general, pero la de la ecualización del histograma parece tener un contraste aún más equilibrado y uniforme.
+\textbf{Referencia:} Esta técnica está documentada en la literatura especializada como una herramienta eficaz para la mejora de imágenes en sistemas de visión por computadora (Gonzalez & Woods, 2018).
 
 \subsubsection{Ecualización del histograma}
 Este método redistribuye los valores de intensidad para aplanar el histograma de la imagen, lo que mejora el contraste en toda la imagen. Es particularmente eficaz para imágenes con muy bajo contraste y puede revelar detalles que de otra manera no serían visibles.
