@@ -359,6 +359,30 @@ En las películas de rayos X tradicionales, los huesos y tejidos densos aparecen
 El siguiente código muestra como se puede aplicar dicha transformación:
 
 \begin{minted}{python}
+bill1 = mpimg.imread('data/billete-original/img1.jpg')
+bill2 = mpimg.imread('data/billete-original/img2.jpg')
+
+neg_bill1 = cv2.bitwise_not(bill1)
+neg_bill2 = cv2.bitwise_not(bill2)
+
+# Show in a 2x2 grid: original and negative for each bill
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+
+axes[0, 0].imshow(bill1)
+axes[0, 0].set_title('Bill 1 - Original')
+axes[0, 0].axis('off')
+
+axes[0, 1].imshow(neg_bill1)
+axes[0, 1].set_title('Bill 1 - Negative')
+axes[0, 1].axis('off')
+
+axes[1, 0].imshow(bill2)
+axes[1, 0].set_title('Bill 2 - Original')
+axes[1, 0].axis('off')
+
+axes[1, 1].imshow(neg_bill2)
+axes[1, 1].set_title('Bill 2 - Negative')
+axes[1, 1].axis('off')
 plt.tight_layout()
 plt.show()
 # Grayscale histogram for each bill and its negative
