@@ -1,0 +1,3 @@
+#!/bin/bash
+
+zip 2_2_SimpleImgProcessing_Equipo5.zip 2.2_simple_img_processing.ipynb reporte/2_2_SimpleImgProcessing_Equipo5_ResultadosFinales.pdf
