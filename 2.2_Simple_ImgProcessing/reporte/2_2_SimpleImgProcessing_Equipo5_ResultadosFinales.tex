@@ -63,7 +63,7 @@
 % --- ENCABEZADOS Y PIES ---
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{SimpleImgProcessing}
+\fancyhead[L]{Actividad 2.2 Google Colab: SimpleImg\_Processing - Equipo 5}
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
@@ -101,14 +101,19 @@
 
   {\huge\bfseries Actividad 2.2 Google Colab\par
    \vspace{0.2cm}
-   \emph{SimpleImgProcessing}\par}
+   \emph{SimpleImg\_Processing}\par}
   \vspace{2.2cm}
 
-  {\Large\bfseries Equipo 5\par}
-  {\normalsize\bfseries A01796323 Benjamín Cisneros Barraza\par}
-  {\normalsize\bfseries A01066264 Carlos Pano Hernandez\par}
-  {\normalsize\bfseries A01795590 Edgar Omar Cruz Mendoza\par}
-  {\normalsize\bfseries A01275322 Jonatan Israel Meza Mendoza\par}
+  \begin{center}
+    {\Large\bfseries Equipo 5\par}
+    \vspace{1em}
+    \begin{tabular}{r l}
+      \textbf{A01796323} & Benjamín Cisneros Barraza \\
+      \textbf{A01066264} & Carlos Pano Hernandez \\
+      \textbf{A01795590} & Edgar Omar Cruz Mendoza \\
+      \textbf{A01275322} & Jonatan Israel Meza Mendoza \\
+    \end{tabular}
+  \end{center}
   
   \vspace{1.2cm}
 
@@ -171,12 +176,20 @@ En esta sección se documenta el proceso práctico realizado para aplicar divers
 
 Cada subsección presenta una técnica específica, su implementación en código, los resultados obtenidos y una justificación basada en literatura especializada. El análisis incluye comparativas visuales y de histogramas que permiten evaluar el impacto de cada transformación sobre las imágenes originales.
 
-\subsection{Carga de imágenes}
+
+
+\subsection{Transformaciones Pixel a Pixel}
+
+Las transformaciones pixel a pixel son técnicas fundamentales en el procesamiento de imágenes, especialmente útiles en la aumentación de datos para entrenar modelos de inteligencia artificial. En este proyecto se aplicaron tres transformaciones fotométricas sobre imágenes propias: transformación logarítmica, estiramiento de contraste y ecualización del histograma. A continuación se describe cada una con su respectiva implementación, análisis y justificación.
+
 Como primer paso en el desarrollo de las actividades, se realizó la carga de tres imágenes propias desde el carrete personal de los integrantes del equipo. Estas imágenes fueron seleccionadas por su diversidad en contenido y condiciones de iluminación, con el objetivo de evaluar el comportamiento de las transformaciones fotométricas aplicadas posteriormente.
 
 La carga se realizó utilizando la biblioteca \texttt{matplotlib} para su visualización y \texttt{OpenCV} para su procesamiento. A continuación se muestra el código utilizado para desplegar las imágenes en una cuadrícula horizontal:
 
 \begin{minted}{python}
+img1 = mpimg.imread('data/img1.jpg')
+img2 = mpimg.imread('data/img2.jpg')
+img3 = mpimg.imread('data/img3.jpg')
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
 axes[0].imshow(img1)
@@ -202,15 +215,13 @@ plt.show()
     \label{fig:carga_imagenes}
 \end{figure}
 
-Estas imágenes servirán como base para aplicar las distintas transformaciones pixel a pixel descritas en las siguientes secciones. La diversidad en sus características permitirá observar con mayor claridad los efectos de cada técnica de procesamiento.
-
-\subsection{Transformaciones Pixel a Pixel}
-
-Las transformaciones pixel a pixel son técnicas fundamentales en el procesamiento de imágenes, especialmente útiles en la aumentación de datos para entrenar modelos de inteligencia artificial. En este proyecto se aplicaron tres transformaciones fotométricas sobre imágenes propias: transformación logarítmica, estiramiento de contraste y ecualización del histograma. A continuación se describe cada una con su respectiva implementación, análisis y justificación.
+Estas imágenes (Figura \ref{fig:carga_imagenes}) servirán como base para aplicar las distintas transformaciones pixel a pixel descritas en las siguientes secciones. La diversidad en sus características permitirá observar con mayor claridad los efectos de cada técnica de procesamiento.
 
 \subsubsection{Transformación logarítmica}
 
 La transformación logarítmica es una técnica fotométrica de procesamiento pixel a pixel que permite expandir el rango dinámico de los píxeles oscuros en una imagen, mientras comprime el de los píxeles brillantes. Esta propiedad la hace especialmente útil para revelar detalles en regiones de sombra o baja iluminación, donde la información visual suele estar oculta.
+
+\textbf{Justificación:} Esta transformación es ampliamente utilizada en tareas de aumentación de datos para modelos de inteligencia artificial, ya que permite generar versiones alternativas de una imagen que conservan su estructura pero resaltan detalles que podrían ser ignorados por modelos de aprendizaje profundo. En particular, es útil en dominios como imágenes médicas, astronomía o inspección industrial, donde los detalles en zonas oscuras pueden ser críticos para la toma de decisiones automatizada.
 
 En este proyecto, se aplicó esta transformación a imágenes propias convertidas previamente a escala de grises. El código implementado utiliza la función \texttt{np.log1p()} para aplicar el logaritmo natural a cada valor de intensidad, escalado por una constante que normaliza el resultado al rango de 0 a 255.
 
@@ -243,14 +254,13 @@ img_log = (c_log * np.log1p(img1_gray.astype(np.float32))).clip(0, 255).astype(n
   \label{fig:histograma_transformacion_logaritmica}
 \end{figure}
 
-\textbf{Justificación:} Esta transformación es ampliamente utilizada en tareas de aumentación de datos para modelos de inteligencia artificial, ya que permite generar versiones alternativas de una imagen que conservan su estructura pero resaltan detalles que podrían ser ignorados por modelos de aprendizaje profundo. En particular, es útil en dominios como imágenes médicas, astronomía o inspección industrial, donde los detalles en zonas oscuras pueden ser críticos para la toma de decisiones automatizada.
 
 \textbf{Comparativa:} Al aplicar la transformación logarítmica, el histograma de la imagen (Figura~\ref{fig:histograma_transformacion_logaritmica}) se modifica significativamente. Los valores de intensidad originalmente agrupados en el rango bajo se redistribuyen hacia el centro del histograma, lo que indica una mejora en la visibilidad de las zonas oscuras. Esta expansión del rango dinámico en las sombras permite que los detalles ocultos sean más accesibles para algoritmos de detección y clasificación. Como se observa en la Figura~\ref{fig:transformacion_logaritmica}, la transformación permite revelar detalles en zonas oscuras que no eran visibles en la imagen original.
 
-\textbf{Referencia:} Esta técnica está documentada en la literatura como una herramienta eficaz para el preprocesamiento de imágenes en sistemas de visión por computadora (Gonzalez & Woods, 2018).
-
 \subsubsection{Estiramiento de contraste}
 El estiramiento de contraste es una técnica fotométrica de transformación pixel a pixel que mejora la visibilidad de los detalles en imágenes con bajo contraste. Esta técnica consiste en mapear linealmente el rango de intensidades de píxeles original a un nuevo rango más amplio, típicamente de 0 a 255, lo que permite una mejor distribución de los niveles de gris y una imagen visualmente más clara.
+
+\textbf{Justificación:} Esta transformación es especialmente útil en el contexto de la inteligencia artificial, ya que permite aumentar la diversidad de imágenes de entrenamiento mediante aumentación de datos. Al mejorar el contraste, se facilita la extracción de características relevantes por parte de modelos de aprendizaje profundo, como redes neuronales convolucionales (CNN), lo cual puede mejorar el rendimiento en tareas de clasificación o segmentación.
 
 En este proyecto, se aplicó el estiramiento de contraste a imágenes propias utilizando percentiles para evitar la influencia de valores atípicos. El código implementado calcula los percentiles 2 y 98 como límites de intensidad, y luego ajusta los valores de píxel en función de estos rangos.
 
@@ -269,8 +279,6 @@ img_cs = np.clip((img1_gray - p_low) * (255.0 / max(1.0, (p_high - p_low))), 0, 
   \label{fig:estiramiento_de_contraste}
 \end{figure}
 
-\textbf{Justificación:} Esta transformación es especialmente útil en el contexto de la inteligencia artificial, ya que permite aumentar la diversidad de imágenes de entrenamiento mediante aumentación de datos. Al mejorar el contraste, se facilita la extracción de características relevantes por parte de modelos de aprendizaje profundo, como redes neuronales convolucionales (CNN), lo cual puede mejorar el rendimiento en tareas de clasificación o segmentación.
-
 \textbf{Comparativa:} En la Figura \ref{fig:estiramiento_de_contraste_justificacion} se observa que el histograma de la imagen original presenta una concentración de valores en un rango estrecho, mientras que el histograma de la imagen transformada muestra una distribución más amplia y uniforme. Esto evidencia la mejora visual y técnica lograda mediante el estiramiento de contraste.
 
 \begin{figure}[H]
@@ -280,10 +288,11 @@ img_cs = np.clip((img1_gray - p_low) * (255.0 / max(1.0, (p_high - p_low))), 0, 
   \label{fig:estiramiento_de_contraste_justificacion}
 \end{figure}
 
-\textbf{Referencia:} Esta técnica está documentada en la literatura especializada como una herramienta eficaz para la mejora de imágenes en sistemas de visión por computadora (Gonzalez & Woods, 2018).
 
 \subsubsection{Ecualización del histograma}
 La ecualización del histograma es una técnica fotométrica de procesamiento pixel a pixel que redistribuye los valores de intensidad de una imagen para aplanar su histograma. Este proceso mejora el contraste global de la imagen, especialmente en aquellas que presentan una concentración de valores en un rango estrecho, como ocurre en condiciones de iluminación deficiente o en imágenes con bajo rango dinámico.
+
+\textbf{Justificación:} Esta técnica es ampliamente utilizada en aumentación de datos para modelos de inteligencia artificial, ya que permite mejorar la visibilidad de estructuras relevantes en imágenes con bajo contraste. Al redistribuir los valores de intensidad, se facilita la extracción de características por parte de algoritmos de aprendizaje profundo, lo que puede mejorar el desempeño en tareas de clasificación, segmentación o detección.
 
 En este proyecto, se aplicó la ecualización del histograma utilizando la función \texttt{equalizeHist()} de la biblioteca \texttt{cv2}, sobre imágenes previamente convertidas a escala de grises. En la Figura~\ref{fig:ecualizacion_imagen} se observa cómo la ecualización mejora la visibilidad de detalles en imágenes originalmente apagadas, al redistribuir los niveles de intensidad. El siguiente código muestra su implementación:
 
@@ -306,14 +315,10 @@ img_eq = cv2.equalizeHist(img1_gray)
   \label{fig:ecualizacion_histograma}
 \end{figure}
 
-\textbf{Justificación:} Esta técnica es ampliamente utilizada en aumentación de datos para modelos de inteligencia artificial, ya que permite mejorar la visibilidad de estructuras relevantes en imágenes con bajo contraste. Al redistribuir los valores de intensidad, se facilita la extracción de características por parte de algoritmos de aprendizaje profundo, lo que puede mejorar el desempeño en tareas de clasificación, segmentación o detección.
 
 \textbf{Comparativa e interpretación del histograma:} Como se observa en la Figura~\ref{fig:ecualizacion_histograma}, el histograma original presentaba una concentración de valores en un rango limitado, lo que se traduce en una imagen visualmente apagada. Tras aplicar la ecualización, los valores se distribuyen de forma más uniforme en el rango de 0 a 255, lo que mejora significativamente el contraste y la percepción de detalles. Esta redistribución permite que los modelos de visión computacional trabajen con imágenes más informativas.
 
-\textbf{Referencia:} Esta técnica está documentada en la literatura como una herramienta eficaz para la mejora de imágenes en sistemas de visión por computadora (Gonzalez & Woods, 2018).
-
 \subsubsection{Comparativa de Histogramas de las transformaciones}
-
 Para evaluar el impacto de las transformaciones fotométricas aplicadas (transformación logarítmica, estiramiento de contraste y ecualización del histograma) se realizó una comparativa visual de los histogramas resultantes. Esta comparación permite observar cómo cada técnica modifica la distribución de los niveles de intensidad en las imágenes, lo cual se traduce en mejoras perceptibles en el contraste y la visibilidad de detalles.
 
 \begin{figure}[H]
@@ -332,29 +337,33 @@ Para evaluar el impacto de las transformaciones fotométricas aplicadas (transfo
     \item La ecualización del histograma genera una distribución más uniforme en todo el rango de 0 a 255, lo que resulta en un contraste más equilibrado y una imagen visualmente más clara.
 \end{itemize}
 
-\textbf{Justificación:} Esta comparativa confirma que cada técnica tiene un efecto distinto sobre la imagen, y su elección depende del tipo de mejora deseada. En el contexto de aumentación de datos para inteligencia artificial, estas transformaciones permiten generar variantes útiles de las imágenes originales, enriqueciendo el conjunto de entrenamiento y mejorando la capacidad de generalización de los modelos.
-
-\textbf{Referencia:} El análisis de histogramas como herramienta para evaluar la calidad de las transformaciones está respaldado por la literatura especializada en procesamiento digital de imágenes (Gonzalez & Woods, 2018).
+Esta comparativa confirma que cada técnica tiene un efecto distinto sobre la imagen, y su elección depende del tipo de mejora deseada. En el contexto de aumentación de datos para inteligencia artificial, estas transformaciones permiten generar variantes útiles de las imágenes originales, enriqueciendo el conjunto de entrenamiento y mejorando la capacidad de generalización de los modelos.
 
 \subsection{Negativo de Imagen}
 
 La inversión de una imagen, o la obtención de su negativo, es una transformación a nivel de píxel donde la intensidad de cada píxel se resta del valor de intensidad máximo posible. Esta técnica es de gran valor en el análisis de películas de radiología, ya que puede hacer que los detalles de bajo contraste sean más visibles.
 
-En las películas de rayos X tradicionales, los huesos y tejidos densos aparecen como áreas claras sobre un fondo oscuro. Para este ejercicio, el uso de esta técnica para la detección de billetes falsos resulta altamente conveniente, pues resalta detalles difíciles de detectar a simple vista. Las Figuras \ref{fig:billete_original_1} y \ref{fig:billete_original_2} muestran el anverso y reverso de un billete de 500 pesos mexicanos antes de realizar la transformación.
+En las películas de rayos X tradicionales, los huesos y tejidos densos aparecen como áreas claras sobre un fondo oscuro. Para este ejercicio, el uso de esta técnica para la detección de billetes falsos resulta altamente conveniente, pues resalta detalles difíciles de detectar a simple vista. Las Figuras \ref{fig:billete_original_anverso} y \ref{fig:billete_original_reverso} muestran el anverso y reverso de un billete de 500 pesos mexicanos antes de realizar la transformación.
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.5\linewidth]{../data/billete-original/img1.jpg}
-  \caption{Billete Original: Anverso}
-  \label{fig:billete_original_1}
-\end{figure}
+\textbf{Justificación:} El uso de la inversión de imágenes para el análisis de billetes falsos se justifica por la manera en que esta técnica resalta características de seguridad que son difíciles de ver a simple vista. Los billetes auténticos contienen marcas de agua, hilos de seguridad y microimpresiones diseñadas para ser sutiles y difíciles de replicar.
+
+\textbf{Demostración:} Al invertir la imagen, los detalles de los billetes que son difíciles de ver a simple vista se vuelven más evidentes como se puede apreciar en las Figuras \ref{fig:billete_negativo_1} y \ref{fig:billete_negativo_2}. Las marcas de seguridad o texturas que eran claras se vuelven oscuras y viceversa.
+Este contraste mejorado facilita que los sistemas de visión computacional y las máquinas de detección identifiquen y validen estas características, permitiendo una verificación rápida y precisa de la autenticidad del billete.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.5\linewidth]{../data/billete-original/img2.jpg}
-  \caption{Billete Original: Reverso}
-  \label{fig:billete_original_2}
+  \caption{Billete Original: Anverso}
+  \label{fig:billete_original_anverso}
 \end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{../data/billete-original/img1.jpg}
+  \caption{Billete Original: Reverso}
+  \label{fig:billete_original_reverso}
+\end{figure}
+
 
 El siguiente código muestra como se puede aplicar dicha transformación:
 
@@ -431,16 +440,17 @@ plt.show()
   \label{fig:histograma_negativo2}
 \end{figure}
 
-\textbf{Análisis Visual:} Al invertir la imagen, los detalles de los billetes que son difíciles de ver a simple vista se vuelven más evidentes como se puede apreciar en las Figuras \ref{fig:billete_negativo_1} y \ref{fig:billete_negativo_2}. Las marcas de seguridad o texturas que eran claras se vuelven oscuras y viceversa.
 
 \textbf{Análisis del Histograma:} Los histogramas de los billetes originales y sus negativos son inversos. Los picos de intensidad que estaban en el lado derecho (brillante) del histograma original se mueven al lado izquierdo (oscuro) en el histograma negativo, y viceversa. Esto refleja el cambio de luminancia en la imagen. En las Figuras \ref{fig:histograma_negativo1} y \ref{fig:histograma_negativo2} se muestra la comparativa de los histogramas de las imágenes originales (lado derecho) con el histograma de su contraparte negativa (lado izquierdo), del anverso y reverso del billete, respectivamente.
 
 \subsection{Corrección de Gamma}
 
-La corrección de gamma es una operación no lineal utilizada para codificar o decodificar la luminancia en las imágenes. Es especialmente útil en campos como la astronomía, donde ayuda a equilibrar la representación visual de objetos celestes muy brillantes y muy oscuros.
+La corrección de gamma es una operación no lineal utilizada para codificar o decodificar la luminancia en las imágenes. 
+
+\textbf{Justificación:} Es especialmente útil en campos como la astronomía, donde ayuda a equilibrar la representación visual de objetos celestes muy brillantes y muy oscuros.
 En las imágenes astronómicas, los objetos tenues como las nebulosas y las galaxias distantes tienen valores de píxel muy bajos en comparación con las estrellas brillantes. Un valor de gamma menor que 1 ($\gamma < 1$) ilumina los tonos medios y las sombras, haciendo que los detalles tenues sean más visibles sin saturar las estrellas brillantes. Por el contrario, un valor de gamma mayor que 1 ($\gamma > 1$) oscurece la imagen, lo que puede usarse para reducir el ruido de fondo.
 
-El siguiente código crea una función que aplica la Corrección Gamma:
+\textbf{Demostración:} El siguiente código crea una función que aplica la Corrección Gamma:
 
 \begin{minted}{python}
 def apply_gamma(image_gray, gamma):
@@ -493,11 +503,12 @@ La Figura \ref{fig:correccion_gamma} muestra diferentes imágenes producidas var
 
 \subsection{Sustracción de Imágenes}
 
-La sustracción de imágenes es una técnica para detectar cambios entre dos imágenes capturadas en momentos diferentes pero desde el mismo punto de vista. Se aplica ampliamente en la vigilancia de seguridad para detectar movimiento o la aparición de nuevos objetos en una escena.
+La sustracción de imágenes es una técnica para detectar cambios entre dos imágenes capturadas en momentos diferentes pero desde el mismo punto de vista. 
 
+\textbf{Justificación:} Se aplica ampliamente en la vigilancia de seguridad para detectar movimiento o la aparición de nuevos objetos en una escena.
 Al restar una imagen de fondo de referencia de un nuevo fotograma, cualquier valor de píxel que no sea cero representa un cambio. Este método crea una máscara  de cambio que aísla los objetos en movimiento del fondo estático. Después de un simple umbral y operaciones morfológicas para limpiar el ruido, la máscara de cambio se puede usar para identificar y localizar intrusos u otros eventos significativos, convirtiéndose en un método potente y de bajo costo para sistemas de monitoreo en tiempo real.
 
-En nuestro ejemplo, las figuras \ref{fig:sustraccion_referencia} y \ref{fig:sustraccion_actual} representan la imagen de referencia e imagen actual respectivamente.
+\textbf{Demostración:} En nuestro ejemplo, las figuras \ref{fig:sustraccion_referencia} y \ref{fig:sustraccion_actual} representan la imagen de referencia e imagen actual respectivamente.
 
 \begin{figure}[H]
   \centering
