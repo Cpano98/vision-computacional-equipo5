@@ -896,6 +896,10 @@ Research and implement a simple method for Sliding Window Adaptive
 Histogram Equalization (SWAHE), and compare its results on several
 images of different types.
 
+\textbf{Sliding Window Adaptive Histogram Equalization (SWAHE)} 
+
+SWAHE applies histogram equalization using a sliding window centered on each pixel. This method adapts to local intensity variations and avoids block artifacts.
+
 \hypertarget{section}{%
 \section{-------------------------------}\label{section}}
 
@@ -1015,6 +1019,16 @@ Processing complete!
     \begin{center}
     \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_1.png}
     \end{center}
+
+\textbf{Conclusion}  
+
+This practice successfully demonstrated the application of Sliding Window Adaptive Histogram Equalization (SWAHE) for enhancing image contrast. By processing images with a sliding window, the SWAHE algorithm effectively adapts the histogram equalization to local image characteristics, resulting in improved detail visibility compared to global histogram equalization methods.
+
+The visual comparison between the original grayscale images and their SWAHE-processed counterparts clearly illustrated the enhancement achieved, particularly in areas with varying light conditions or subtle details. The use of a configurable window size allowed for exploration of its impact on the resulting image enhancement.
+
+It's worth noting that while effective, the SWAHE process, especially with larger images or window sizes, can be computationally intensive and result in longer processing times compared to simpler methods.
+
+This exercise highlights the utility of adaptive histogram equalization techniques like SWAHE in computer vision tasks where local contrast enhancement is crucial for subsequent analysis or visualization.
     { \hspace*{\fill} \\}
     
     \hypertarget{exercise-3}{%
