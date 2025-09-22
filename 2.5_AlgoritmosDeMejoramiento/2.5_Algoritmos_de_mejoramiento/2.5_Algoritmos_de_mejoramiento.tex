@@ -1,0 +1,1688 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{2.5\_Algoritmos\_de\_mejoramiento}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{google-colab---algoritmos-de-mejoramiento-de-imuxe1genes-basado-por-pixeles}{%
+\section{2.5 Google Colab - Algoritmos de mejoramiento de imágenes
+basado por
+pixeles}\label{google-colab---algoritmos-de-mejoramiento-de-imuxe1genes-basado-por-pixeles}}
+
+\hypertarget{computer-vision-for-images-and-video-tc4033---group-10}{%
+\subsubsection{Computer Vision for Images and Video (TC4033 - Group
+10)}\label{computer-vision-for-images-and-video-tc4033---group-10}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{School}: School of Engineering and Sciences, Tecnológico de
+  Monterrey
+\item
+  \textbf{Lead Professor}: Dr.~Gilberto Ochoa Ruiz
+\item
+  \textbf{Assistant Professor}: MIP Ma. del Refugio Melendez Alfaro
+\item
+  \textbf{Tutor Professor}: Iván Reyes Amezcua
+\item
+  \textbf{Team 5}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Benjamin Cisneros Barraza - A01796323
+  \item
+    Jonatan Israel Meza Mendoza - A01275322
+  \item
+    Carlos Pano Hernández - A01066264
+  \item
+    Edgar Omar Cruz Mendoza - A01795590
+  \end{itemize}
+\item
+  \textbf{Date}: Sunday, September 21th, 2025
+\end{itemize}
+
+    \hypertarget{importing-libraries}{%
+\subsection{\texorpdfstring{Importing Libraries
+}{Importing Libraries }}\label{importing-libraries}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{image} \PY{k}{as} \PY{n}{mpimg}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{cv2}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{loading-images}{%
+\subsection{\texorpdfstring{Loading Images
+}{Loading Images }}\label{loading-images}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Load images}
+\PY{k}{try}\PY{p}{:}
+    \PY{n}{img1} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/img1.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{img2} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/img2.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{img3} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/img3.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{img10} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/img10.jpg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Images loaded successfully!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 1 shape:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{img1}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 2 shape:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{img2}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 3 shape:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{img3}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 10 shape:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{img10}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{k}{except} \PY{n+ne}{FileNotFoundError} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Error loading images: }\PY{l+s+si}{\PYZob{}}\PY{n}{e}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{. Please ensure the }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{data}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ folder is in the same directory as this notebook and contains the required images.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Handle gracefully if images are not found}
+    \PY{n}{img1}\PY{p}{,} \PY{n}{img2}\PY{p}{,} \PY{n}{img3}\PY{p}{,} \PY{n}{img10} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Images loaded successfully!
+Image 1 shape: (3464, 4618, 3)
+Image 2 shape: (3024, 4032, 3)
+Image 3 shape: (4032, 3024, 3)
+Image 10 shape: (256, 256, 3)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Display the selected images}
+\PY{k}{if} \PY{n}{img1} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img2} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img3} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+    \PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img1}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img2}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img3}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{exercise-1}{%
+\subsubsection{Exercise 1}\label{exercise-1}}
+
+Research and implement the tile-based histogram equalization method.
+
+In these methods, the image is partitioned into different windows (i.e.,
+tiles), and histograms are calculated independently for each window,
+applying the correction to each tile. There is a trade-off between the
+window size and computational complexity, making this method more
+complex than the simple approach.
+
+Implement this version and perform some tests by varying the window
+size. Another drawback is that you may observe noticeable differences in
+contrast between the blocks; how could this be improved?
+
+\hypertarget{section}{%
+\section{-------------------------------}\label{section}}
+
+    \hypertarget{tile-based-histogram-equalization-clahe}{%
+\subsection{Tile-Based Histogram Equalization
+(CLAHE)}\label{tile-based-histogram-equalization-clahe}}
+
+\textbf{Tile-based histogram equalization}, specifically the
+\textbf{Contrast-Limited Adaptive Histogram Equalization (CLAHE)}
+method, is a technique to improve contrast in images. Unlike global
+histogram equalization, which calculates a single histogram for the
+entire image, CLAHE divides the image into smaller, non-overlapping
+regions called \textbf{tiles}.
+
+The CLAHE method addresses the limitations of simple adaptive histogram
+equalization (AHE) by preventing the amplification of noise and ensuring
+smooth transitions between tiles. This method works by:
+
+\begin{itemize}
+\item
+  \textbf{Tiling:} The input image is divided into a grid of rectangular
+  tiles. The size of these tiles is a crucial parameter. A larger tile
+  size results in a more uniform equalization, similar to the global
+  method, while a smaller size provides more localized contrast
+  enhancement.
+\item
+  \textbf{Local Equalization:} A histogram is computed for each tile. A
+  key step in CLAHE is to \textbf{clip} this histogram at a predefined
+  limit. This prevents any single intensity value from having a
+  disproportionately high frequency, which would cause over-enhancement
+  and noise amplification. After clipping, the histogram is normalized,
+  and a separate mapping function is generated for each tile.
+\item
+  \textbf{Interpolation:} To eliminate the artificial boundaries that
+  can appear between tiles due to independent processing, CLAHE uses
+  \textbf{bilinear interpolation}. This process smooths the transition
+  between adjacent tiles by blending the equalization results from the
+  surrounding tiles, creating a seamless and natural-looking final
+  image.
+\end{itemize}
+
+This approach is particularly effective for images where the contrast
+varies significantly across different regions, revealing details in both
+bright and dark areas simultaneously.
+
+    \hypertarget{implementation-and-parameter-testing}{%
+\subsubsection{Implementation and Parameter
+Testing}\label{implementation-and-parameter-testing}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Creating our CLAHE function. Receives an image, a clip limit and a tile grid size.}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{apply\PYZus{}clahe}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{clip\PYZus{}limit}\PY{o}{=}\PY{l+m+mf}{2.0}\PY{p}{,} \PY{n}{tile\PYZus{}grid\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Applies Contrast\PYZhy{}Limited Adaptive Histogram Equalization (CLAHE).}
+
+\PY{l+s+sd}{    Parameters:}
+\PY{l+s+sd}{    \PYZhy{} image: The input grayscale image.}
+\PY{l+s+sd}{    \PYZhy{} clip\PYZus{}limit: The contrast clipping threshold. A higher value means more contrast.}
+\PY{l+s+sd}{    \PYZhy{} tile\PYZus{}grid\PYZus{}size: The size of the tile grid (width, height).}
+
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{    \PYZhy{} The processed image.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{} Create a CLAHE object}
+    \PY{n}{clahe} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{createCLAHE}\PY{p}{(}\PY{n}{clipLimit}\PY{o}{=}\PY{n}{clip\PYZus{}limit}\PY{p}{,} \PY{n}{tileGridSize}\PY{o}{=}\PY{n}{tile\PYZus{}grid\PYZus{}size}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Apply CLAHE to the image}
+    \PY{n}{processed\PYZus{}image} \PY{o}{=} \PY{n}{clahe}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+    \PY{k}{return} \PY{n}{processed\PYZus{}image}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{if} \PY{n}{img1} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img2} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img3} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+    \PY{k}{try}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Convert images to grayscale for CLAHE processing}
+        \PY{n}{img1\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img1}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)}
+        \PY{n}{img2\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img2}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)}
+        \PY{n}{img3\PYZus{}gray} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{img3}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Vary the window size and contrast limits for testing}
+        \PY{n}{sizes} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{16}\PY{p}{)}\PY{p}{]}
+        \PY{n}{clip\PYZus{}limits} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{2.0}\PY{p}{,} \PY{l+m+mf}{4.0}\PY{p}{]}
+        
+        \PY{n}{images} \PY{o}{=} \PY{p}{[}\PY{n}{img1\PYZus{}gray}\PY{p}{,} \PY{n}{img2\PYZus{}gray}\PY{p}{,} \PY{n}{img3\PYZus{}gray}\PY{p}{]}
+        \PY{n}{image\PYZus{}names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        
+        \PY{k}{for} \PY{n}{img\PYZus{}idx}\PY{p}{,} \PY{p}{(}\PY{n}{img\PYZus{}gray}\PY{p}{,} \PY{n}{img\PYZus{}name}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n}{images}\PY{p}{,} \PY{n}{image\PYZus{}names}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Processing }\PY{l+s+si}{\PYZob{}}\PY{n}{img\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Create a comprehensive figure with images and histograms}
+            \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{25}\PY{p}{)}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Create grid layout: 2 columns (image + histogram) for each row}
+            \PY{n}{gs} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}gridspec}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{sizes}\PY{p}{)} \PY{o}{*} \PY{n+nb}{len}\PY{p}{(}\PY{n}{clip\PYZus{}limits}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{hspace}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{,} \PY{n}{wspace}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Original image and histogram}
+            \PY{n}{ax\PYZus{}img} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{n}{gs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+            \PY{n}{ax\PYZus{}hist} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{n}{gs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+            
+            \PY{n}{ax\PYZus{}img}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img\PYZus{}gray}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{ax\PYZus{}img}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{img\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ \PYZhy{} Original (Grayscale)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{,} \PY{n}{fontweight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{ax\PYZus{}img}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Original histogram}
+            \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{img\PYZus{}gray}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{256}\PY{p}{,} \PY{n+nb}{range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{)}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{)}
+            \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original Histogram}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+            \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pixel Intensity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+            
+            \PY{n}{plot\PYZus{}index} \PY{o}{=} \PY{l+m+mi}{1}
+            
+            \PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{sizes}\PY{p}{:}
+                \PY{k}{for} \PY{n}{clip} \PY{o+ow}{in} \PY{n}{clip\PYZus{}limits}\PY{p}{:}
+                    \PY{n}{processed\PYZus{}image} \PY{o}{=} \PY{n}{apply\PYZus{}clahe}\PY{p}{(}\PY{n}{img\PYZus{}gray}\PY{p}{,} \PY{n}{clip\PYZus{}limit}\PY{o}{=}\PY{n}{clip}\PY{p}{,} \PY{n}{tile\PYZus{}grid\PYZus{}size}\PY{o}{=}\PY{n}{size}\PY{p}{)}
+                    
+                    \PY{c+c1}{\PYZsh{} Image subplot}
+                    \PY{n}{ax\PYZus{}img} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{n}{gs}\PY{p}{[}\PY{n}{plot\PYZus{}index}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}img}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{processed\PYZus{}image}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}img}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE: Tile }\PY{l+s+si}{\PYZob{}}\PY{n}{size}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, Clip }\PY{l+s+si}{\PYZob{}}\PY{n}{clip}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}img}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                    
+                    \PY{c+c1}{\PYZsh{} Histogram subplot}
+                    \PY{n}{ax\PYZus{}hist} \PY{o}{=} \PY{n}{fig}\PY{o}{.}\PY{n}{add\PYZus{}subplot}\PY{p}{(}\PY{n}{gs}\PY{p}{[}\PY{n}{plot\PYZus{}index}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{processed\PYZus{}image}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{256}\PY{p}{,} \PY{n+nb}{range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{)}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Histogram: Tile }\PY{l+s+si}{\PYZob{}}\PY{n}{size}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, Clip }\PY{l+s+si}{\PYZob{}}\PY{n}{clip}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pixel Intensity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                    \PY{n}{ax\PYZus{}hist}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{True}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+                    
+                    \PY{n}{plot\PYZus{}index} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            
+            \PY{n}{plt}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE Analysis for }\PY{l+s+si}{\PYZob{}}\PY{n}{img\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{,} \PY{n}{fontweight}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+m+mf}{0.98}\PY{p}{)}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Statistical analysis}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{img\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ \PYZhy{} Statistical Analysis:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original \PYZhy{} Mean: }\PY{l+s+si}{\PYZob{}}\PY{n}{img\PYZus{}gray}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, Std: }\PY{l+s+si}{\PYZob{}}\PY{n}{img\PYZus{}gray}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Test different parameters and show best results}
+            \PY{n}{best\PYZus{}contrast} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{n}{best\PYZus{}params} \PY{o}{=} \PY{k+kc}{None}
+            \PY{n}{best\PYZus{}image} \PY{o}{=} \PY{k+kc}{None}
+            
+            \PY{k}{for} \PY{n}{size} \PY{o+ow}{in} \PY{n}{sizes}\PY{p}{:}
+                \PY{k}{for} \PY{n}{clip} \PY{o+ow}{in} \PY{n}{clip\PYZus{}limits}\PY{p}{:}
+                    \PY{n}{test\PYZus{}img} \PY{o}{=} \PY{n}{apply\PYZus{}clahe}\PY{p}{(}\PY{n}{img\PYZus{}gray}\PY{p}{,} \PY{n}{clip\PYZus{}limit}\PY{o}{=}\PY{n}{clip}\PY{p}{,} \PY{n}{tile\PYZus{}grid\PYZus{}size}\PY{o}{=}\PY{n}{size}\PY{p}{)}
+                    \PY{n}{contrast} \PY{o}{=} \PY{n}{test\PYZus{}img}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Standard deviation as contrast measure}
+                    \PY{k}{if} \PY{n}{contrast} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}contrast}\PY{p}{:}
+                        \PY{n}{best\PYZus{}contrast} \PY{o}{=} \PY{n}{contrast}
+                        \PY{n}{best\PYZus{}params} \PY{o}{=} \PY{p}{(}\PY{n}{size}\PY{p}{,} \PY{n}{clip}\PY{p}{)}
+                        \PY{n}{best\PYZus{}image} \PY{o}{=} \PY{n}{test\PYZus{}img}
+            
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best CLAHE \PYZhy{} Tile: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}params}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, Clip: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}params}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Best CLAHE \PYZhy{} Mean: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}image}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, Std: }\PY{l+s+si}{\PYZob{}}\PY{n}{best\PYZus{}image}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Contrast Improvement: }\PY{l+s+si}{\PYZob{}}\PY{p}{(}\PY{p}{(}\PY{n}{best\PYZus{}contrast}\PY{+w}{ }\PY{o}{\PYZhy{}}\PY{+w}{ }\PY{n}{img\PYZus{}gray}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{+w}{ }\PY{o}{/}\PY{+w}{ }\PY{n}{img\PYZus{}gray}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{An unexpected error occurred: }\PY{l+s+si}{\PYZob{}}\PY{n}{e}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Processing Image 1{\ldots}
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/var/folders/fc/52j9sv\_132gdd2pvx3lpbt180000gn/T/ipykernel\_19281/3437559743.py:6
+2: UserWarning: This figure includes Axes that are not compatible with
+tight\_layout, so results might be incorrect.
+  plt.tight\_layout()
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Image 1 - Statistical Analysis:
+Original - Mean: 110.41, Std: 62.25
+Best CLAHE - Tile: (4, 4), Clip: 2.0
+Best CLAHE - Mean: 123.45, Std: 71.19
+Contrast Improvement: 14.4\%
+
+Processing Image 2{\ldots}
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Image 2 - Statistical Analysis:
+Original - Mean: 82.35, Std: 41.08
+Best CLAHE - Tile: (4, 4), Clip: 4.0
+Best CLAHE - Mean: 121.63, Std: 63.24
+Contrast Improvement: 53.9\%
+
+Processing Image 3{\ldots}
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_6.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Image 3 - Statistical Analysis:
+Original - Mean: 58.41, Std: 69.66
+Best CLAHE - Tile: (4, 4), Clip: 4.0
+Best CLAHE - Mean: 73.67, Std: 75.22
+Contrast Improvement: 8.0\%
+    \end{Verbatim}
+
+    \hypertarget{how-to-improve-the-contrast-between-blocks}{%
+\subsection{How to Improve the Contrast Between
+Blocks}\label{how-to-improve-the-contrast-between-blocks}}
+
+The primary drawback of a simple tile-based histogram equalization (AHE)
+is the potential for \textbf{noticeable differences in contrast between
+blocks}, resulting in a grid-like artifact. The implementation we used,
+\textbf{CLAHE}, already incorporates the key improvements to solve this
+issue:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Contrast Limiting}: By using a \texttt{clip\_limit}, CLAHE
+  prevents any single histogram bin from having an extremely high count.
+  This stops the algorithm from aggressively amplifying contrast in
+  uniform regions (like a clear sky), which would otherwise lead to
+  noise amplification and sharp contrast differences between tiles.
+\item
+  \textbf{Bilinear Interpolation}: This is the most critical feature.
+  Instead of simply applying the equalization function for each tile and
+  then putting the image back together, CLAHE calculates the final pixel
+  value by \textbf{interpolating} the results from the four surrounding
+  tiles. This creates a smooth, continuous transition across tile
+  boundaries, effectively eliminating the grid artifacts.
+\end{enumerate}
+
+    \hypertarget{clahe-best-practices-and-usage-guidelines}{%
+\subsection{CLAHE Best Practices and Usage
+Guidelines}\label{clahe-best-practices-and-usage-guidelines}}
+
+\hypertarget{when-to-use-clahe}{%
+\subsubsection{When to Use CLAHE:}\label{when-to-use-clahe}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Low-contrast images}: When global histogram equalization fails
+  to reveal details in both bright and dark areas simultaneously.
+\item
+  \textbf{Medical imaging}: Enhances X-rays, CT scans, and MRI images
+  where local contrast is crucial for diagnosis.
+\item
+  \textbf{Satellite imagery}: Improves contrast in aerial photos with
+  varying lighting conditions.
+\item
+  \textbf{Photography}: Can be used to create an HDR-like effect,
+  bringing out details in shadows and highlights from a single exposure.
+\item
+  \textbf{Computer vision preprocessing}: An excellent preprocessing
+  step to enhance images before applying feature detection, object
+  recognition, or segmentation algorithms.
+\end{enumerate}
+
+\hypertarget{parameter-selection-guide}{%
+\subsubsection{Parameter Selection
+Guide:}\label{parameter-selection-guide}}
+
+\hypertarget{clip-limit-contrast-limiting}{%
+\paragraph{Clip Limit (Contrast
+Limiting):}\label{clip-limit-contrast-limiting}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{1.0-2.0}: \textbf{Conservative}, preserves a more natural look
+  while providing a subtle enhancement.
+\item
+  \textbf{2.0-3.0}: A \textbf{balanced} enhancement, often the
+  recommended starting point.
+\item
+  \textbf{3.0-4.0}: \textbf{Aggressive} enhancement; may introduce
+  artifacts but can be useful for very low-contrast images.
+\item
+  \textbf{\textgreater4.0}: Usually too aggressive, with a high risk of
+  amplifying noise and creating unnatural results.
+\end{itemize}
+
+\hypertarget{tile-grid-size}{%
+\paragraph{Tile Grid Size:}\label{tile-grid-size}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{(4,4)}: Provides \textbf{very local adaptation} and is good
+  for revealing fine details, but may create more visible artifacts if
+  the clip limit is high.
+\item
+  \textbf{(8,8)}: Offers a \textbf{good balance} between local and
+  global adaptation and is the recommended starting point.
+\item
+  \textbf{(16,16)}: Provides a \textbf{smoother} result with more global
+  adaptation, similar to regular histogram equalization but with more
+  local control.
+\item
+  \textbf{(32,32)}: Very global; the effect will be very similar to
+  regular histogram equalization, losing the benefits of a tiled
+  approach.
+\end{itemize}
+
+\hypertarget{best-practices}{%
+\subsubsection{Best Practices:}\label{best-practices}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Start with (8,8) tiles and a clip limit of 2.0.}
+\item
+  \textbf{Adjust the clip limit first, then the tile size}, to find the
+  optimal balance between contrast enhancement and noise.
+\item
+  \textbf{Be mindful of over-enhancement artifacts}, which can make the
+  image look artificial or ``grainy.''
+\item
+  \textbf{Use statistical measures} like standard deviation to
+  objectively quantify the contrast improvement.
+\end{enumerate}
+
+    \hypertarget{exercise-2}{%
+\subsubsection{Exercise 2}\label{exercise-2}}
+
+Research and implement a simple method for Sliding Window Adaptive
+Histogram Equalization (SWAHE), and compare its results on several
+images of different types.
+
+\hypertarget{section}{%
+\section{-------------------------------}\label{section}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} 3. SWAHE DEFINITION (IMPROVED WITH CLIP LIMIT)}
+\PY{c+c1}{\PYZsh{}WINDOW\PYZus{}SIZE = 51  \PYZsh{} Can adjust this value}
+\PY{n}{WINDOW\PYZus{}SIZE} \PY{o}{=} \PY{l+m+mi}{51}
+\PY{n}{CLIP\PYZus{}LIMIT} \PY{o}{=} \PY{l+m+mf}{0.02}  \PY{c+c1}{\PYZsh{} Adjust this value (e.g., 0.01 to 0.05 are common starting points)}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{swahe}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{window\PYZus{}size}\PY{p}{,} \PY{n}{clip\PYZus{}limit}\PY{o}{=}\PY{l+m+mf}{0.02}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{window\PYZus{}size} \PY{o}{\PYZpc{}} \PY{l+m+mi}{2} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Window size must be odd.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{n}{h}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{shape}
+    \PY{n}{output\PYZus{}image} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+    \PY{n}{pad\PYZus{}size} \PY{o}{=} \PY{n}{window\PYZus{}size} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2}
+    \PY{n}{padded\PYZus{}image} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{pad}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{pad\PYZus{}size}\PY{p}{,} \PY{n}{mode}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reflect}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Processing a }\PY{l+s+si}{\PYZob{}}\PY{n}{h}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{x}\PY{l+s+si}{\PYZob{}}\PY{n}{w}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ image with a }\PY{l+s+si}{\PYZob{}}\PY{n}{window\PYZus{}size}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{x}\PY{l+s+si}{\PYZob{}}\PY{n}{window\PYZus{}size}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ window and clip\PYZus{}limit=}\PY{l+s+si}{\PYZob{}}\PY{n}{clip\PYZus{}limit}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{h}\PY{p}{)}\PY{p}{:}
+        \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{:}
+            \PY{n}{window} \PY{o}{=} \PY{n}{padded\PYZus{}image}\PY{p}{[}\PY{n}{y} \PY{p}{:} \PY{n}{y} \PY{o}{+} \PY{n}{window\PYZus{}size}\PY{p}{,} \PY{n}{x} \PY{p}{:} \PY{n}{x} \PY{o}{+} \PY{n}{window\PYZus{}size}\PY{p}{]}
+            \PY{n}{center\PYZus{}pixel\PYZus{}value} \PY{o}{=} \PY{n}{image}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{]}
+
+            \PY{c+c1}{\PYZsh{} Calculate histogram}
+            \PY{n}{hist}\PY{p}{,} \PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{window}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{256}\PY{p}{,} \PY{n+nb}{range}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} Apply Contrast Limiting (CLAHE\PYZhy{}like behavior) \PYZhy{}\PYZhy{}\PYZhy{}}
+            \PY{n}{num\PYZus{}pixels\PYZus{}in\PYZus{}window} \PY{o}{=} \PY{n}{window}\PY{o}{.}\PY{n}{size}
+            \PY{n}{max\PYZus{}bin\PYZus{}height} \PY{o}{=} \PY{n}{num\PYZus{}pixels\PYZus{}in\PYZus{}window} \PY{o}{*} \PY{n}{clip\PYZus{}limit}
+
+            \PY{c+c1}{\PYZsh{} Clip the histogram bins}
+            \PY{n}{excess} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{hist}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{n}{hist}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{n}{max\PYZus{}bin\PYZus{}height}\PY{p}{:}
+                    \PY{n}{excess} \PY{o}{+}\PY{o}{=} \PY{n}{hist}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{max\PYZus{}bin\PYZus{}height}
+                    \PY{n}{hist}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{max\PYZus{}bin\PYZus{}height}
+
+            \PY{c+c1}{\PYZsh{} Redistribute the excess}
+            \PY{n}{redistribute\PYZus{}per\PYZus{}bin} \PY{o}{=} \PY{n}{excess} \PY{o}{/} \PY{l+m+mi}{256}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{hist}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{n}{hist}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{redistribute\PYZus{}per\PYZus{}bin}
+            \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} End Contrast Limiting \PYZhy{}\PYZhy{}\PYZhy{}}
+
+            \PY{c+c1}{\PYZsh{} Calculate CDF}
+            \PY{n}{cdf} \PY{o}{=} \PY{n}{hist}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{p}{)}
+
+            \PY{k}{if} \PY{n}{cdf}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{output\PYZus{}image}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+                \PY{k}{continue}
+
+            \PY{c+c1}{\PYZsh{} Normalize CDF to 0\PYZhy{}255}
+            \PY{n}{cdf\PYZus{}normalized} \PY{o}{=} \PY{p}{(}\PY{n}{cdf} \PY{o}{*} \PY{l+m+mi}{255} \PY{o}{/} \PY{n}{cdf}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Map the center pixel\PYZsq{}s value}
+            \PY{n}{output\PYZus{}image}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{]} \PY{o}{=} \PY{n}{cdf\PYZus{}normalized}\PY{p}{[}\PY{n}{center\PYZus{}pixel\PYZus{}value}\PY{p}{]}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Processing complete!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{k}{return} \PY{n}{output\PYZus{}image}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} Processing loop for img1, img2, img3 \PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Images already imported as img1, img2, img3 (see earlier code)}
+\PY{n}{image\PYZus{}objs} \PY{o}{=} \PY{p}{[}\PY{n}{img10}\PY{p}{]}
+\PY{n}{image\PYZus{}names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{img10}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{image\PYZus{}obj}\PY{p}{,} \PY{n}{image\PYZus{}name} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{image\PYZus{}objs}\PY{p}{,} \PY{n}{image\PYZus{}names}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n}{image\PYZus{}obj} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{WARNING: Image object }\PY{l+s+s2}{\PYZsq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{image\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ is None. Skipping.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{k}{continue}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Processing: }\PY{l+s+si}{\PYZob{}}\PY{n}{image\PYZus{}name}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} If image is RGB, convert to grayscale}
+    \PY{k}{if} \PY{n}{image\PYZus{}obj}\PY{o}{.}\PY{n}{ndim} \PY{o}{==} \PY{l+m+mi}{3}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Handle alpha channel if present}
+        \PY{k}{if} \PY{n}{image\PYZus{}obj}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{4}\PY{p}{:}
+            \PY{n}{gray\PYZus{}image} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{p}{(}\PY{n}{image\PYZus{}obj}\PY{p}{[}\PY{o}{.}\PY{o}{.}\PY{o}{.}\PY{p}{,} \PY{p}{:}\PY{l+m+mi}{3}\PY{p}{]} \PY{o}{*} \PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{gray\PYZus{}image} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{p}{(}\PY{n}{image\PYZus{}obj} \PY{o}{*} \PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)}
+    \PY{k}{else}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} Already grayscale, but ensure uint8}
+        \PY{k}{if} \PY{n}{image\PYZus{}obj}\PY{o}{.}\PY{n}{dtype} \PY{o}{!=} \PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Assume float in 0\PYZhy{}1}
+            \PY{n}{gray\PYZus{}image} \PY{o}{=} \PY{p}{(}\PY{n}{image\PYZus{}obj} \PY{o}{*} \PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{gray\PYZus{}image} \PY{o}{=} \PY{n}{image\PYZus{}obj}
+
+    \PY{c+c1}{\PYZsh{} Apply SWAHE with the improved function and clip\PYZus{}limit}
+    \PY{n}{swahe\PYZus{}result} \PY{o}{=} \PY{n}{swahe}\PY{p}{(}\PY{n}{gray\PYZus{}image}\PY{p}{,} \PY{n}{window\PYZus{}size}\PY{o}{=}\PY{n}{WINDOW\PYZus{}SIZE}\PY{p}{,} \PY{n}{clip\PYZus{}limit}\PY{o}{=}\PY{n}{CLIP\PYZus{}LIMIT}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Display the results}
+    \PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{gray\PYZus{}image}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Original (Grayscale)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{swahe\PYZus{}result}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SWAHE Result (Window }\PY{l+s+si}{\PYZob{}}\PY{n}{WINDOW\PYZus{}SIZE}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{x}\PY{l+s+si}{\PYZob{}}\PY{n}{WINDOW\PYZus{}SIZE}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{, Clip }\PY{l+s+si}{\PYZob{}}\PY{n}{CLIP\PYZus{}LIMIT}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{n}{image\PYZus{}name}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Processing: img10
+Processing a 256x256 image with a 51x51 window and clip\_limit=0.02{\ldots}
+Processing complete!
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{exercise-3}{%
+\subsubsection{Exercise 3}\label{exercise-3}}
+
+Research how the CLAHE algorithm (Contrast Limited Adaptive Histogram
+Equalization) works and implement it (you may use the OpenCV
+implementation). Test it on different types of images and compare the
+results with the basic histogram equalization method. Provide a brief
+description of the method based on your literature review.
+
+\hypertarget{section}{%
+\section{-------------------------------}\label{section}}
+
+    \hypertarget{objective}{%
+\subsubsection{Objective}\label{objective}}
+
+The goal of this exercise is to investigate the \textbf{Contrast Limited
+Adaptive Histogram Equalization (CLAHE)} algorithm, describe its
+functioning based on bibliographic research, and implement it using
+OpenCV. Different images will be processed with both \textbf{basic
+histogram equalization (HE)} and \textbf{CLAHE} in order to compare
+their performance in terms of visual quality and contrast enhancement.
+The results aim to highlight the advantages and limitations of CLAHE
+over the classical method.
+
+    \hypertarget{description-of-the-method}{%
+\subsubsection{Description of the
+Method}\label{description-of-the-method}}
+
+\textbf{Contrast Limited Adaptive Histogram Equalization (CLAHE).}\\
+CLAHE is an advanced technique for enhancing the contrast of digital
+images. Unlike traditional histogram equalization, which applies the
+same transformation to the entire image, CLAHE works locally: it divides
+the image into smaller blocks called tiles and analyzes the distribution
+of pixel intensities within each one. This localized approach allows the
+method to adapt to variations in brightness and contrast across
+different regions of the image, making subtle details more visible even
+under uneven illumination. To avoid exaggerated contrast or noise in
+uniform areas, CLAHE introduces a mechanism that limits how much each
+intensity value can grow in the histogram. Any excess is redistributed
+fairly across the intensity range, ensuring balance. Finally, because
+each tile is processed independently, the algorithm blends the results
+smoothly through interpolation, preventing abrupt edges between tiles.
+In this way, CLAHE achieves a compromise: it enhances local contrast and
+reveals fine structures while controlling noise and preserving visual
+continuity across the image.
+
+In the following section, this procedure will be described
+mathematically, presenting the sequence of operations and the role of
+each parameter through formal equations.
+
+\textbf{Step 1. Local histogram per tile.}
+
+For a tile of size:
+
+\[
+M \times N
+\]
+
+with gray levels:
+
+\[
+0,1,\dots,L-1,
+\]
+
+the histogram is defined as:
+
+\[
+h_i = \text{number of pixels with intensity level } i, \quad i \in [0,L-1].
+\]
+
+Where:
+
+\[
+M = \text{number of rows (height) of the tile,}
+\]
+
+\[
+N = \text{number of columns (width) of the tile,}
+\]
+
+\[
+L = \text{number of possible gray levels,}
+\]
+
+\[
+h_i = \text{histogram bin count at gray level } i.
+\]
+
+\textbf{Step 2. Apply the clip limit.}
+
+To prevent over-amplification of noise, each histogram bin is clipped
+as:
+
+\[
+h'_i = \min(h_i, C).
+\]
+
+Where:
+
+\[
+h'_i = \text{clipped histogram bin count at level } i,
+\]
+
+\[
+h_i = \text{original histogram bin count at level } i,
+\]
+
+\[
+C = \text{clip limit (maximum allowed bin height).}
+\]
+
+\textbf{Step 3. Redistribute the excess.}
+
+The number of counts exceeding the clip limit is:
+
+\[
+\Delta = \sum_{i=0}^{L-1} \max(0, h_i - C).
+\]
+
+Where:
+
+\[
+\Delta = \text{total number of clipped pixels,}
+\]
+
+\[
+h_i = \text{original histogram bin count at level } i,
+\]
+
+\[
+C = \text{clip limit.}
+\]
+
+After redistribution, the adjusted histogram satisfies:
+
+\[
+\sum_{i=0}^{L-1} h''_i = M \times N
+\]
+
+Where:
+
+\[
+h''_i = \text{histogram after clipping and redistribution.}
+\]
+
+\textbf{Step 4. Compute the mapping (CDF).}
+
+The equalization mapping per tile is:
+
+\[
+s_k = \operatorname{round}\!\left( (L-1) \sum_{j=0}^{k} \frac{h''_j}{M \times N} \right).
+\]
+
+Where:
+
+\[
+s_k = \text{output mapped gray level for input } r_k,
+\]
+
+\[
+r_k = \text{input gray level,}
+\]
+
+\[
+h''_j = \text{redistributed histogram bin count at level } j,
+\]
+
+\[
+M \times N = \text{total number of pixels in the tile.}
+\]
+
+\textbf{Step 5. Bilinear interpolation across tiles.}
+
+To avoid block artifacts, mappings from neighboring tiles are
+interpolated. For a pixel at normalized coordinates ((\alpha,\beta))
+inside a 2×2 neighborhood:
+
+\[
+s = (1-\alpha)(1-\beta)\,s_{00} + \alpha(1-\beta)\,s_{10} + (1-\alpha)\beta\,s_{01} + \alpha\beta\,s_{11}.
+\]
+
+Where:
+
+\[
+\alpha, \beta \in [0,1] = \text{relative position of the pixel in the tile neighborhood,}
+\]
+
+\[
+s_{00}, s_{10}, s_{01}, s_{11} = \text{mapped outputs from the four adjacent tiles.}
+\]
+
+\textbf{Parameter effects.}
+
+\begin{itemize}
+\tightlist
+\item
+  Tile size:
+\end{itemize}
+
+\[
+M \times N
+\]
+
+Smaller values → more local adaptation, risk of blockiness. Larger
+values → closer to global HE.
+
+\begin{itemize}
+\tightlist
+\item
+  Clip limit:
+\end{itemize}
+
+\[
+C
+\]
+
+Higher values → stronger contrast, more noise. Lower values → less
+noise, weaker enhancement.
+
+\textbf{Summary.}\\
+In essence, CLAHE follows a structured pipeline composed of five main
+stages:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Divide the image into tiles.}\\
+  The image is partitioned into non-overlapping regions so that contrast
+  enhancement can adapt to local intensity variations rather than
+  relying on a single global transformation.
+\item
+  \textbf{Compute local histograms.}\\
+  Within each tile, a histogram of gray-level intensities is built,
+  capturing the distribution of pixel values in that region.
+\item
+  \textbf{Clip bins and redistribute the excess.}\\
+  To avoid excessive amplification of noise, each histogram bin is
+  capped at a clip limit. Counts above this threshold are accumulated as
+  ``excess'' and redistributed uniformly across all bins, ensuring that
+  the total pixel count remains unchanged.
+\item
+  \textbf{Apply CDF-based mapping.}\\
+  Using the adjusted histogram, a cumulative distribution function (CDF)
+  is calculated. This function remaps the original pixel intensities to
+  new values, stretching the local dynamic range and improving contrast.
+\item
+  \textbf{Interpolate across tiles.}\\
+  Because each tile is processed independently, their borders could
+  otherwise appear discontinuous. To prevent this, CLAHE applies
+  bilinear interpolation between adjacent tiles, blending results
+  smoothly and avoiding block artifacts.
+\end{enumerate}
+
+Through these steps, CLAHE establishes a balance between \textbf{local
+contrast enhancement} and \textbf{noise suppression}. By restricting the
+amplification of homogeneous regions while still enhancing edges and
+fine structures, it manages to improve visibility in images where global
+methods like HE often fail. This makes CLAHE particularly effective in
+demanding applications such as \textbf{medical imaging} (CT scans, MRI,
+X-rays), \textbf{low-light photography}, and \textbf{remote sensing},
+where preserving subtle local details is critical. Its versatility and
+robustness have positioned CLAHE as a standard choice whenever contrast
+must be improved without compromising image quality.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+    \textbf{Histogram Equalization (HE).}\\
+Histogram Equalization is a global technique for image contrast
+enhancement. Its goal is to redistribute pixel intensity values so that
+the resulting histogram is approximately uniform, meaning that all
+intensity levels are represented more evenly across the image. This
+process stretches the most frequent intensity values over a wider range,
+thereby increasing the global contrast. The method works by computing
+the cumulative distribution function (CDF) of the entire image and using
+it as a mapping function to remap input intensities into output values.
+As a result, darker regions are brightened and lighter regions are
+darkened, improving overall visibility. However, since the same mapping
+is applied to the entire image, this approach may over-enhance noise and
+is prone to washing out fine local details in regions with homogeneous
+intensity distributions (Wang \& Yang, 2024; Ochoa Ruiz, 2025).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\textbf{Comparison.}\\
+While both Histogram Equalization (HE) and Contrast Limited Adaptive
+Histogram Equalization (CLAHE) aim to improve visibility through
+histogram manipulation, they differ fundamentally in scope and
+robustness. HE applies a \textbf{single global transformation}, which
+can be effective in evenly distributed images but often produces
+excessive brightness, loss of detail, or amplification of noise in
+challenging conditions. CLAHE, in contrast, operates \textbf{locally on
+small tiles} and applies a clipping mechanism that limits the
+amplification of any intensity range. This local and controlled
+adjustment allows CLAHE to reveal fine structures and subtle contrasts
+while preventing noise over-enhancement. Consequently, CLAHE is
+generally more reliable than HE for low-light images, low-resolution
+content, or environments with high levels of noise, as it preserves
+detail without introducing severe artifacts (Mohammed \& Isa, 2025; Soni
+\& Waoo, 2025).
+
+    \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{image-processing-with-clahe-and-he}{%
+\subsubsection{Image Processing with CLAHE and
+HE}\label{image-processing-with-clahe-and-he}}
+
+\textbf{3.3 Image Processing with HE and CLAHE}\\
+To evaluate the practical performance of both methods, we will process
+three different test images that represent distinct visual conditions.
+The first image corresponds to an indoor wrestling event captured under
+\textbf{low-light conditions}, where details in the darker regions are
+difficult to perceive. The second image shows a \textbf{set of colorful
+flowers in daylight}, which provides a scenario with rich colors and
+moderate contrast. The third image depicts a \textbf{wall with cracks
+and subtle texture}, representing a low-contrast and nearly uniform
+surface. By applying both Histogram Equalization (HE) and Contrast
+Limited Adaptive Histogram Equalization (CLAHE) to these cases, it
+becomes possible to analyze how each algorithm behaves when dealing with
+dark environments, complex color distributions, and homogeneous regions.
+This will allow us to highlight the advantages and limitations of the
+two methods under diverse imaging conditions.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} ================================================================}
+\PY{c+c1}{\PYZsh{} Loading Images (img7, img8, img9)}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} En esta sección cargamos las tres imágenes seleccionadas}
+\PY{c+c1}{\PYZsh{} para el procesamiento con HE y CLAHE.}
+\PY{c+c1}{\PYZsh{} ================================================================}
+
+\PY{c+c1}{\PYZsh{} Load images}
+\PY{k}{try}\PY{p}{:}
+    \PY{n}{img7} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/img7.JPEG}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}   \PY{c+c1}{\PYZsh{} Evento deportivo (low\PYZhy{}light)}
+    \PY{n}{img8} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/img8.JPEG}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}   \PY{c+c1}{\PYZsh{} Flores (contraste y color)}
+    \PY{n}{img9} \PY{o}{=} \PY{n}{mpimg}\PY{o}{.}\PY{n}{imread}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data/img9.JPG}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    \PY{c+c1}{\PYZsh{} Pared (bajo contraste homogéneo)}
+
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Images loaded successfully!}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Image 7 shape:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{img7}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Image 8 shape:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{img8}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Image 9 shape:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{img9}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{k}{except} \PY{n+ne}{FileNotFoundError} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Error loading images: }\PY{l+s+si}{\PYZob{}}\PY{n}{e}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} Handle gracefully if images are not found}
+    \PY{n}{img7}\PY{p}{,} \PY{n}{img8}\PY{p}{,} \PY{n}{img9} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}
+
+\PY{c+c1}{\PYZsh{} Display the selected images}
+\PY{k}{if} \PY{n}{img7} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img8} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img9} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+    \PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img7}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 7 — Low Light}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img8}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 8 — Flowers}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img9}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image 9 — Wall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Images loaded successfully!
+Image 7 shape: (3024, 3024, 3)
+Image 8 shape: (4032, 3024, 3)
+Image 9 shape: (1826, 2014, 3)
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} ================================================================}
+\PY{c+c1}{\PYZsh{} — Procesamiento de imágenes con HE y CLAHE (comparación)}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} En esta sección se implementa la comparación entre:}
+\PY{c+c1}{\PYZsh{}   1. La imagen original en escala de grises.}
+\PY{c+c1}{\PYZsh{}   2. Histogram Equalization (HE) global.}
+\PY{c+c1}{\PYZsh{}   3. CLAHE con configuración por defecto.}
+\PY{c+c1}{\PYZsh{}   4. CLAHE con configuración alternativa (clip limit mayor y bloques más pequeños).}
+\PY{c+c1}{\PYZsh{}}
+\PY{c+c1}{\PYZsh{} El objetivo es observar cómo varía la distribución del histograma}
+\PY{c+c1}{\PYZsh{} y los indicadores cuantitativos (desviación estándar y entropía),}
+\PY{c+c1}{\PYZsh{} mostrando en una misma figura la imagen resultante y su histograma.}
+\PY{c+c1}{\PYZsh{} ================================================================}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Funciones auxiliares}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{to\PYZus{}uint8}\PY{p}{(}\PY{n}{img}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Convierte la imagen a formato uint8 [0,255].}
+\PY{l+s+sd}{    Si la imagen se encuentra en flotantes [0,1], realiza la conversión.}
+\PY{l+s+sd}{    Esto asegura compatibilidad con OpenCV en las operaciones posteriores.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{return} \PY{p}{(}\PY{n}{img} \PY{o}{*} \PY{l+m+mi}{255}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)} \PY{k}{if} \PY{n}{img}\PY{o}{.}\PY{n}{dtype}\PY{o}{.}\PY{n}{kind} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{f}\PY{l+s+s2}{\PYZdq{}} \PY{k}{else} \PY{n}{img}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{image\PYZus{}entropy}\PY{p}{(}\PY{n}{img\PYZus{}uint8}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Calcula la entropía del histograma de la imagen.}
+\PY{l+s+sd}{    La entropía mide el grado de dispersión de los niveles de gris,}
+\PY{l+s+sd}{    reflejando la cantidad de información contenida en la imagen.}
+\PY{l+s+sd}{    Valores más altos implican mayor diversidad tonal.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{hist} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{calcHist}\PY{p}{(}\PY{p}{[}\PY{n}{img\PYZus{}uint8}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+    \PY{n}{p} \PY{o}{=} \PY{n}{hist} \PY{o}{/} \PY{p}{(}\PY{n}{hist}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+m+mf}{1e\PYZhy{}12}\PY{p}{)}   \PY{c+c1}{\PYZsh{} normalización a distribución de probabilidad}
+    \PY{n}{p} \PY{o}{=} \PY{n}{p}\PY{p}{[}\PY{n}{p} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{]}                      \PY{c+c1}{\PYZsh{} se eliminan ceros para evitar log indefinidos}
+    \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{p} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{show\PYZus{}hist}\PY{p}{(}\PY{n}{ax}\PY{p}{,} \PY{n}{img}\PY{p}{,} \PY{n}{title}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Grafica el histograma de una imagen en escala de grises.}
+\PY{l+s+sd}{    Se utiliza para visualizar la redistribución de intensidades}
+\PY{l+s+sd}{    después de aplicar HE o CLAHE.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{img}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{256}\PY{p}{,} \PY{n+nb}{range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{)}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{n}{title}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gray level}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Conversión a escala de grises}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Las técnicas de HE y CLAHE operan sobre imágenes en un solo canal.}
+\PY{c+c1}{\PYZsh{} Se convierte cada imagen a escala de grises para aplicar las transformaciones.}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{k}{assert} \PY{n}{img7} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img8} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{img9} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Las imágenes deben cargarse primero.}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{imgs\PYZus{}rgb}  \PY{o}{=} \PY{p}{[}\PY{n}{img7}\PY{p}{,} \PY{n}{img8}\PY{p}{,} \PY{n}{img9}\PY{p}{]}
+\PY{n}{titles}    \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Image 7 — Low Light}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Image 8 — Flowers}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Image 9 — Wall}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{imgs\PYZus{}gray} \PY{o}{=} \PY{p}{[}\PY{n}{cv2}\PY{o}{.}\PY{n}{cvtColor}\PY{p}{(}\PY{n}{to\PYZus{}uint8}\PY{p}{(}\PY{n}{im}\PY{p}{)}\PY{p}{,} \PY{n}{cv2}\PY{o}{.}\PY{n}{COLOR\PYZus{}RGB2GRAY}\PY{p}{)} \PY{k}{for} \PY{n}{im} \PY{o+ow}{in} \PY{n}{imgs\PYZus{}rgb}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Configuración de CLAHE}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} \PYZhy{} Configuración por defecto: clipLimit=2.0, grid=(8x8).}
+\PY{c+c1}{\PYZsh{} \PYZhy{} Variante: clipLimit=4.0, grid=(4x4).}
+\PY{c+c1}{\PYZsh{} Estas configuraciones permiten comparar cómo la limitación de contraste}
+\PY{c+c1}{\PYZsh{} y el tamaño de las teselas afectan la mejora de la imagen.}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{clahe\PYZus{}cfg\PYZus{}default} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{clip}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{2.0}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{\PYZcb{}}
+\PY{n}{clahe\PYZus{}cfg\PYZus{}variant} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{clip}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+m+mf}{4.0}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Procesamiento principal}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Para cada imagen:}
+\PY{c+c1}{\PYZsh{}   1. Se calculan métricas del original (desviación estándar y entropía).}
+\PY{c+c1}{\PYZsh{}   2. Se aplica HE (global).}
+\PY{c+c1}{\PYZsh{}   3. Se aplica CLAHE en dos configuraciones.}
+\PY{c+c1}{\PYZsh{}   4. Se muestran las imágenes y sus histogramas.}
+\PY{c+c1}{\PYZsh{}   5. Se almacenan las métricas en una tabla comparativa.}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n}{summary\PYZus{}rows} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{gimg}\PY{p}{,} \PY{n}{title} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{imgs\PYZus{}gray}\PY{p}{,} \PY{n}{titles}\PY{p}{)}\PY{p}{:}
+
+    \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} Imagen original \PYZhy{}\PYZhy{}\PYZhy{}}
+    \PY{n}{orig\PYZus{}std} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{gimg}\PY{p}{)}\PY{p}{)}
+    \PY{n}{orig\PYZus{}ent} \PY{o}{=} \PY{n}{image\PYZus{}entropy}\PY{p}{(}\PY{n}{gimg}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} Histogram Equalization (HE) global \PYZhy{}\PYZhy{}\PYZhy{}}
+    \PY{n}{he\PYZus{}img}  \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{equalizeHist}\PY{p}{(}\PY{n}{gimg}\PY{p}{)}
+    \PY{n}{he\PYZus{}std}  \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{he\PYZus{}img}\PY{p}{)}\PY{p}{)}
+    \PY{n}{he\PYZus{}ent}  \PY{o}{=} \PY{n}{image\PYZus{}entropy}\PY{p}{(}\PY{n}{he\PYZus{}img}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} CLAHE (configuración por defecto) \PYZhy{}\PYZhy{}\PYZhy{}}
+    \PY{n}{clahe\PYZus{}d} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{createCLAHE}\PY{p}{(}\PY{n}{clipLimit}\PY{o}{=}\PY{n}{clahe\PYZus{}cfg\PYZus{}default}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{clip}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+                              \PY{n}{tileGridSize}\PY{o}{=}\PY{n}{clahe\PYZus{}cfg\PYZus{}default}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{gimg}\PY{p}{)}
+    \PY{n}{d\PYZus{}std}   \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{clahe\PYZus{}d}\PY{p}{)}\PY{p}{)}
+    \PY{n}{d\PYZus{}ent}   \PY{o}{=} \PY{n}{image\PYZus{}entropy}\PY{p}{(}\PY{n}{clahe\PYZus{}d}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} CLAHE (configuración variante) \PYZhy{}\PYZhy{}\PYZhy{}}
+    \PY{n}{clahe\PYZus{}v} \PY{o}{=} \PY{n}{cv2}\PY{o}{.}\PY{n}{createCLAHE}\PY{p}{(}\PY{n}{clipLimit}\PY{o}{=}\PY{n}{clahe\PYZus{}cfg\PYZus{}variant}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{clip}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}
+                              \PY{n}{tileGridSize}\PY{o}{=}\PY{n}{clahe\PYZus{}cfg\PYZus{}variant}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{gimg}\PY{p}{)}
+    \PY{n}{v\PYZus{}std}   \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{clahe\PYZus{}v}\PY{p}{)}\PY{p}{)}
+    \PY{n}{v\PYZus{}ent}   \PY{o}{=} \PY{n}{image\PYZus{}entropy}\PY{p}{(}\PY{n}{clahe\PYZus{}v}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} Visualización comparativa \PYZhy{}\PYZhy{}\PYZhy{}}
+    \PY{c+c1}{\PYZsh{} Se generan figuras con 2 filas × 4 columnas:}
+    \PY{c+c1}{\PYZsh{}   Fila 1: imágenes (Original, HE, CLAHE default, CLAHE variant).}
+    \PY{c+c1}{\PYZsh{}   Fila 2: histogramas correspondientes.}
+    \PY{n}{fig}\PY{p}{,} \PY{n}{axes} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{18}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+    \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HE vs CLAHE — }\PY{l+s+si}{\PYZob{}}\PY{n}{title}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{,} \PY{n}{fontweight}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bold}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Fila 1: imágenes}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{gimg}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;}    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{he\PYZus{}img}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;}  \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HE (Global)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{clahe\PYZus{}d}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE default}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{clip=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}default}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clip}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, grid=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}default}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{clahe\PYZus{}v}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE variant}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{clip=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}variant}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clip}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, grid=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}variant}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;} \PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Fila 2: histogramas}
+    \PY{n}{show\PYZus{}hist}\PY{p}{(}\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{gimg}\PY{p}{,}   \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{std=}\PY{l+s+si}{\PYZob{}}\PY{n}{orig\PYZus{}std}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{  ent=}\PY{l+s+si}{\PYZob{}}\PY{n}{orig\PYZus{}ent}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{show\PYZus{}hist}\PY{p}{(}\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{he\PYZus{}img}\PY{p}{,} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HE}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{std=}\PY{l+s+si}{\PYZob{}}\PY{n}{he\PYZus{}std}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{  ent=}\PY{l+s+si}{\PYZob{}}\PY{n}{he\PYZus{}ent}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{show\PYZus{}hist}\PY{p}{(}\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{clahe\PYZus{}d}\PY{p}{,}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE default}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{std=}\PY{l+s+si}{\PYZob{}}\PY{n}{d\PYZus{}std}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{  ent=}\PY{l+s+si}{\PYZob{}}\PY{n}{d\PYZus{}ent}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{show\PYZus{}hist}\PY{p}{(}\PY{n}{axes}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{n}{clahe\PYZus{}v}\PY{p}{,}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE variant}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{std=}\PY{l+s+si}{\PYZob{}}\PY{n}{v\PYZus{}std}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{  ent=}\PY{l+s+si}{\PYZob{}}\PY{n}{v\PYZus{}ent}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{} Registro de resultados para la tabla comparativa \PYZhy{}\PYZhy{}\PYZhy{}}
+    \PY{n}{summary\PYZus{}rows} \PY{o}{+}\PY{o}{=} \PY{p}{[}
+        \PY{p}{(}\PY{n}{title}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Original}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}       \PY{n}{orig\PYZus{}std}\PY{p}{,} \PY{n}{orig\PYZus{}ent}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{—}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{—}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,}
+        \PY{p}{(}\PY{n}{title}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HE (global)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}    \PY{n}{he\PYZus{}std}\PY{p}{,}   \PY{n}{he\PYZus{}ent}\PY{p}{,}   \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{—}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{—}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,}
+        \PY{p}{(}\PY{n}{title}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE default}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{d\PYZus{}std}\PY{p}{,}    \PY{n}{d\PYZus{}ent}\PY{p}{,}    \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{clip=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}default}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clip}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}default}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,}
+        \PY{p}{(}\PY{n}{title}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CLAHE variant}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{v\PYZus{}std}\PY{p}{,}    \PY{n}{v\PYZus{}ent}\PY{p}{,}    \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{clip=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}variant}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clip}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grid=}\PY{l+s+si}{\PYZob{}}\PY{n}{clahe\PYZus{}cfg\PYZus{}variant}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,}
+    \PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Tabla resumen de resultados}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{c+c1}{\PYZsh{} Se presenta un cuadro con:}
+\PY{c+c1}{\PYZsh{}   \PYZhy{} Nombre de la imagen.}
+\PY{c+c1}{\PYZsh{}   \PYZhy{} Método aplicado.}
+\PY{c+c1}{\PYZsh{}   \PYZhy{} Desviación estándar (std).}
+\PY{c+c1}{\PYZsh{}   \PYZhy{} Entropía (ent).}
+\PY{c+c1}{\PYZsh{}   \PYZhy{} Parámetros de CLAHE (si aplican).}
+\PY{c+c1}{\PYZsh{} \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{=== Comparison Summary (std / entropy) ===}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Image}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}22}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Method}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{std}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}8}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{entropy}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZgt{}8}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clip}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{grid}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{80}\PY{p}{)}
+\PY{k}{for} \PY{n}{row} \PY{o+ow}{in} \PY{n}{summary\PYZus{}rows}\PY{p}{:}
+    \PY{n}{img\PYZus{}name}\PY{p}{,} \PY{n}{method}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{e}\PY{p}{,} \PY{n}{clip}\PY{p}{,} \PY{n}{grid} \PY{o}{=} \PY{n}{row}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{img\PYZus{}name}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}22}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{n}{method}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}15}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{n}{s}\PY{l+s+si}{:}\PY{l+s+s2}{8.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{n}{e}\PY{l+s+si}{:}\PY{l+s+s2}{8.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{n}{clip}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ | }\PY{l+s+si}{\PYZob{}}\PY{n}{grid}\PY{l+s+si}{:}\PY{l+s+s2}{\PYZlt{}10}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+=== Comparison Summary (std / entropy) ===
+Image                  | Method          |      std |  entropy | clip       |
+grid
+--------------------------------------------------------------------------------
+Image 7 — Low Light    | Original        |    23.15 |    2.373 | —          | —
+Image 7 — Low Light    | HE (global)     |    78.18 |    2.244 | —          | —
+Image 7 — Low Light    | CLAHE default   |    33.46 |    2.922 | clip=2.0   |
+grid=(8, 8)
+Image 7 — Low Light    | CLAHE variant   |    34.97 |    2.919 | clip=4.0   |
+grid=(4, 4)
+Image 8 — Flowers      | Original        |    79.92 |    5.440 | —          | —
+Image 8 — Flowers      | HE (global)     |    73.65 |    5.277 | —          | —
+Image 8 — Flowers      | CLAHE default   |    74.36 |    5.530 | clip=2.0   |
+grid=(8, 8)
+Image 8 — Flowers      | CLAHE variant   |    72.76 |    5.532 | clip=4.0   |
+grid=(4, 4)
+Image 9 — Wall         | Original        |     8.56 |    3.519 | —          | —
+Image 9 — Wall         | HE (global)     |    74.24 |    3.487 | —          | —
+Image 9 — Wall         | CLAHE default   |    12.50 |    3.919 | clip=2.0   |
+grid=(8, 8)
+Image 9 — Wall         | CLAHE variant   |    19.15 |    4.341 | clip=4.0   |
+grid=(4, 4)
+    \end{Verbatim}
+
+    \hypertarget{results}{%
+\subsection{Results}\label{results}}
+
+The comparative analysis between global Histogram Equalization (HE) and
+Contrast Limited Adaptive Histogram Equalization (CLAHE) is presented
+through three case studies: a scene under low-light conditions (Image
+7), a set of flowers with naturally high contrast and strong color
+presence (Image 8), and a homogeneous wall with low contrast (Image 9).
+The evaluation metrics employed were the standard deviation (σ),
+associated with the global contrast of the image, and entropy (H),
+related to the amount of information and the distribution of gray
+levels.
+
+Across the three test cases, the results show that global Histogram
+Equalization (HE) tends to excessively stretch the histogram, yielding
+very high standard deviation values (e.g., σ = 78.18 in the low-light
+image and σ = 74.24 in the homogeneous wall), but often at the expense
+of entropy reduction, indicating loss of tonal diversity and the
+introduction of visual artifacts. In contrast, CLAHE consistently
+produced a more balanced enhancement: in low-light and homogeneous
+images it increased both contrast and entropy (e.g., from H = 2.373 to H
+≈ 2.92 in the low-light case, and from H = 3.519 to H = 4.341 in the
+wall), revealing hidden details without saturation; while in the
+high-contrast flower image, CLAHE preserved and slightly improved
+entropy (H = 5.532) without degrading the natural tonal distribution,
+unlike HE which reduced it (H = 5.277). Overall, the numerical evidence
+confirms that CLAHE achieves controlled local contrast enhancement and
+better information retention compared to the global and often unstable
+behavior of HE.
+
+The experimental comparison between global Histogram Equalization (HE)
+and Contrast Limited Adaptive Histogram Equalization (CLAHE)
+demonstrates that while HE is effective in globally redistributing pixel
+intensities, it often leads to over-amplification of contrast and a
+reduction in entropy, which results in loss of tonal diversity and the
+introduction of artifacts, particularly in homogeneous or low-light
+images (Wang \& Yang, 2024). On the other hand, CLAHE consistently
+provides a more controlled and adaptive enhancement, improving both
+contrast and entropy in challenging scenarios while preserving natural
+tonal distributions in already high-contrast images (Mohammed \& Isa,
+2025; Soni \& Waoo, 2025). These results confirm that CLAHE is a more
+robust and versatile approach for practical applications, particularly
+in domains such as medical imaging, low-light photography, and remote
+sensing, where the preservation of fine details and controlled noise
+amplification are critical.
+
+    \hypertarget{bibliography}{%
+\subsection{Bibliography}\label{bibliography}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Zuiderveld, K. (1994). Contrast-limited adaptive histogram
+  equalization. In \emph{Graphics Gems IV} (pp.~474--485). Academic
+  Press.}
+\item
+  \textbf{OpenCV Documentation.}
+\item
+  \textbf{Digital Image Processing, 4th Edition, by Rafael C. Gonzalez
+  and Richard E. Woods.}
+\item
+  \textbf{Majid Mohammed, I., \& Ashidi Mat Isa, N. (2025). Contrast
+  Limited Adaptive Local Histogram Equalization Method for Poor Contrast
+  Image Enhancement. IEEE Access, 13, 62600--62632.
+  https://doi.org/10.1109/ACCESS.2025.3558506}
+\item
+  \textbf{Soni, L. N., \& Waoo, A. A. (2025). Face Detection Under
+  Low-Light and Low-Resolution Conditions Using Contrast-Limited
+  Adaptive Histogram Equalization and a Modified Convolutional Neural
+  Network. Journal of Neonatal Surgery, 14(32s), 2620--2631.
+  https://doi.org/10.63682/jns.v14i32s.7793}
+\item
+  \textbf{Wang, W., \& Yang, Y. (2024). A histogram equalization model
+  for color image contrast enhancement. Signal, Image and Video
+  Processing, 18(2), 1725--1732.
+  https://doi.org/10.1007/s11760-023-02881-9}
+\item
+  \textbf{Ochoa Ruiz, G. (2025). Ecualización por histogramas. Computer
+  Science Dept., Advanced AI Research Group, Tecnológico de Monterrey.
+  {[}Class presentation{]}.}
+\end{itemize}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
